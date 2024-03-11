@@ -14,13 +14,16 @@ export class LayoutComponent implements OnInit {
   }
 
   /* Creamos la variable datos para almacenar lo que se quiera enviar a la API
-     para filtrar la información
+     para filtrar la información. Si se cambia, se puede traer otra información
+     que cumpla con los criterios del filtrado.
    */
   private datos: ExampleDto = {
     tipo: ["avance", "monto"],
-    objetivo: [["TERMINADA", "EN PROCESO"], [0, 40]]
+    objetivo: [["EN PROCESO"], [0, 40]]
   }
-
+  /*
+  Creamos una variable para almacenar la respuesta
+  */
   public datosRespuesta: ExampleResponse = {
     resultados: [{
       descripcion: '',
@@ -60,8 +63,10 @@ export class LayoutComponent implements OnInit {
     }
 
   };
-
-  public descipciones: any[] = [];
+  /*
+  Creamos una variable pública para almacenar las descripciones
+  */
+  public descipciones: string[] = [];
 
   /* ngOnInit es uno de varios métodos usados en el ciclo de vida de Angular.
   Se utiliza principalmente para inicializar datos y realizar tareas al
@@ -102,7 +107,7 @@ export class LayoutComponent implements OnInit {
             // En este caso, solo queremos las descripciones, pero si borras descripciones
             // y colocas solo res. veras todas las opciones que pueden extraerse gracias
             // a las interfaces que creaste. Pueden ser AnioF, colonia, codigo, avance, etc
-            const descipciones = respuesta.resultados.map((res) => res.descripcion);
+            const descipciones: string[] = respuesta.resultados.map((res) => res.descripcion);
             this.descipciones = descipciones;
 
           },
