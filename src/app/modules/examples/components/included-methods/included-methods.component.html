@@ -1,0 +1,21 @@
+<div class="d-flex flex-column">
+  <div class="row-1 m-4 ps-2">
+    <h1 class="fs-1">Map</h1>
+    <p class="fs-4">Map es un método <b>inmutable</b> que nos permite iterar sobre un array y <b>crear uno nuevo</b> con
+      nuevas características o <b>transformaciones</b>. </p>
+  </div>
+  <div class="row-1 m-4 text-success bg-dark rounded">
+    <code class="flex-row d-block m-4 fs-4 text-success bg-dark">
+      <br />
+      const numbers = [1, 2, 3, 4, 5]; <br />
+      const numbersPlusOne = numbers.map(number => number + 1);<br />
+      <br />
+      console.log('original', numbers) <br />
+      //[1, 2, 3, 4, 5] El array original no fue modificado <br />
+      <br />
+      console.log('new_version', numbersPlusOne) <br />
+      //[2, 3, 4, 5, 6] Sino que se creo una nueva copia con las modificaciones.<br />
+      <br />
+    </code>
+  </div>
+</div>

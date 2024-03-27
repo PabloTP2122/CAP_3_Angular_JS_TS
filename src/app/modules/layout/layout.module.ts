@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 
 import { LayoutRoutingModule } from './layout-routing.module';
 import { LayoutComponent } from './components/layout/layout.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 
 @NgModule({
   declarations: [
-    LayoutComponent
+    LayoutComponent,
+    NavbarComponent
   ],
   imports: [
     CommonModule,

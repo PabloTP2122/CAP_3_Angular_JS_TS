@@ -1,0 +1,17 @@
+<div>
+  <p class="fs-1 ps-2">Ejemplo con filtros</p>
+  <p class="f2-2 ps-5 fw-bold">Tipo de filtros aplicados: </p>
+  <p class="f2-2 ps-5">{{datos.tipo[0] | uppercase}}, {{datos.tipo[1] | uppercase }}</p>
+  <p class="f2-2 ps-5 fw-bold">Objetivo: </p>
+  <p class="f2-2 ps-5">AVANCE: {{datos.objetivo[0][0]}} y {{datos.objetivo[0][1]}}</p>
+  <p class="f2-2 ps-5">MONTO: {{datos.objetivo[1][0] | currency}} a {{datos.objetivo[1][1] | currency}} millones de
+    pesos.
+  </p>
+</div>
+<div>
+  <h1 class="fs-2 fw-bold ps-2">Obras sin coordenadas (coordenadas 0,0)</h1>
+  <div class="ps-2" *ngFor="let obra of obras">
+    <p>{{obras | json}}</p>
+  </div>
+  <!-- {{datosRespuesta | json}} -->
+</div>

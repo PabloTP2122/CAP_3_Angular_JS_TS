@@ -1,1 +1,40 @@
-/* You can add global styles to this file, and also import other style files */
+* {
+  margin: 0px;
+  padding: 0px;
+  /* font-size: 62.5%; */
+  box-sizing: border-box;
+}
+
+
+/*Variables*/
+
+:root {
+  --color1: #075760;
+  --color2: #19868F;
+  --color3: #43B6BD;
+  --color4: #4CC4D3;
+  --color-barra: #E2ECF1;
+  --color-header-principal: #00828E;
+  --color-barra-cmpartida: #eaf0f4;
+  --verde-boton-action: #8BF8C8;
+  --color-sub-head: #00838E;
+  --agua-potable: #56C8D8;
+  --drenaje-pluvial: #D95030;
+  --drenaje-sanitario: #808080;
+  --directa: #E88329;
+  --publica: #03C8D8;
+  --restringida: #00838E;
+  --interfaz-mapa: #90EEB5;
+  --color-activo: #3498a5;
+  --header-size: 4rem;
+  --family: "Work Sans";
+}
+
+html,
+body {
+  width: 100%;
+  margin: 0;
+  font-family: 'Work Sans', Roboto, "Helvetica Neue", sans-serif;
+  color: var(--color1);
+  line-height: normal;
+}

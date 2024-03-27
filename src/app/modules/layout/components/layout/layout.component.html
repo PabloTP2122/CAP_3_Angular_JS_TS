@@ -1,8 +1,6 @@
-<p>Ejemplo con filtros</p>
-<div>
-  <h1>Obras sin coordenadas (coordenadas 0,0)</h1>
-  <div *ngFor="let descipcion of descipciones">
-    <p>{{descipcion | json}}</p>
-  </div>
-  <!-- {{datosRespuesta | json}} -->
+<!-- TODO: mover esto a examples y dejar aquí un layout con la navbar -->
+<app-navbar></app-navbar>
+<div class="p-0 m-0 flex justify-center w-full grow">
+  <router-outlet></router-outlet>
+  <div class="container-fluid"></div>
 </div>

@@ -1,0 +1,9 @@
+.active {
+  text-align: center;
+  width: fit-content;
+  border-bottom: solid 0.2rem var(--color-activo);
+}
+
+ng-deep ul {
+  list-style-type: none;
+}
