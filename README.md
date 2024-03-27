@@ -46,5 +46,6 @@ Instalación de librerías en caso de perder configuración de npm:
 
 2.- Actualizar el archivo de angular.json con:
 
-`"styles": ["./node_modules/bootstrap/dist/css/bootstrap.css",              "src/styles.css"                          ],            "scripts": [              "./node_modules/jquery/dist/jquery.js",              "./node_modules/bootstrap/dist/js/bootstrap.js"            ]
+`"styles": ["src/styles.css","./node_modules/bootstrap/dist/css/bootstrap.css"],
+"scripts": ["./node_modules/bootstrap/dist/js/bootstrap.js"]
 `
