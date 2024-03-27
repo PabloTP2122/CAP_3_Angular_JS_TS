@@ -25,3 +25,26 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+## Instalaciones adicionales
+
+Instalación de librerías en caso de perder configuración de npm:
+
+- D3.js
+
+`npm install d3`
+
+- Leaflet
+
+`npm install leaflet @types/leaflet`
+
+- Bootstrap
+
+  1.- Instalar bootstrap
+
+`npm install bootstrap bootstrap-icons`
+
+2.- Actualizar el archivo de angular.json con:
+
+`"styles": ["./node_modules/bootstrap/dist/css/bootstrap.css",              "src/styles.css"                          ],            "scripts": [              "./node_modules/jquery/dist/jquery.js",              "./node_modules/bootstrap/dist/js/bootstrap.js"            ]
+`

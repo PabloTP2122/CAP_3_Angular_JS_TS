@@ -1,8 +1,8 @@
 <p>Ejemplo con filtros</p>
 <div>
-  <h1>Descripciones</h1>
+  <h1>Obras sin coordenadas (coordenadas 0,0)</h1>
   <div *ngFor="let descipcion of descipciones">
-    <p>{{descipcion}}</p>
+    <p>{{descipcion | json}}</p>
   </div>
   <!-- {{datosRespuesta | json}} -->
 </div>
