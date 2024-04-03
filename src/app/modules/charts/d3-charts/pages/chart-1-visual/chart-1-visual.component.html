@@ -1,1 +1,13 @@
-<p>chart-1-visual works!</p>
+<!-- <p>chart-1-visual works!</p> -->
+<svg>
+  <rect *ngFor="let item of data; index as idx" [attr.x]="idx * width" [attr.y]="250-item" [attr.width]="width"
+    [attr.height]="item">
+  </rect>
+</svg>
+<!-- <svg>
+  <rect x="0" y="0" width="50" height="125"></rect>
+  <rect x="50" y="0" width="50" height="100"></rect>
+  <rect x="100" y="0" width="50" height="50"></rect>
+  <rect x="150" y="0" width="50" height="75"></rect>
+  <rect x="200" y="0" width="50" height="200"></rect>
+</svg> -->

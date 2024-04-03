@@ -1,21 +1,175 @@
 <div class="d-flex flex-column">
-  <div class="row-1 m-4 ps-2">
-    <h1 class="fs-1">Map</h1>
-    <p class="fs-4">Map es un método <b>inmutable</b> que nos permite iterar sobre un array y <b>crear uno nuevo</b> con
-      nuevas características o <b>transformaciones</b>. </p>
+  <div class="p-4">
+    <h1 class="fs-1">Métodos en JavaScript</h1>
+    <p class="p-2 fs-3">Dentro de javascript existen métodos específicamente diseñados para la manipulación de arreglos,
+      que se clasifican en mutables e inmutables. Los métodos mutables modifican el arreglo original, alterando su
+      contenido directamente. En contraste,
+      los métodos inmutables generan un nuevo arreglo con los resultados de la operación, dejando el arreglo original
+      sin cambios. Esta distinción es crucial para entender cómo se gestionan y manipulan los datos en JavaScript,
+      particularmente porque,
+      a diferencia de los tipos primitivos como números y strings que son inmutables, los arreglos y objetos son
+      estructuras de datos mutables que admiten cambios en su estado."
+    </p>
+    <p>Puedes ejecutar el código de abajo en la terminal o con RunJS</p>
   </div>
-  <div class="row-1 m-4 text-success bg-dark rounded">
-    <code class="flex-row d-block m-4 fs-4 text-success bg-dark">
-      <br />
-      const numbers = [1, 2, 3, 4, 5]; <br />
-      const numbersPlusOne = numbers.map(number => number + 1);<br />
-      <br />
-      console.log('original', numbers) <br />
-      //[1, 2, 3, 4, 5] El array original no fue modificado <br />
-      <br />
-      console.log('new_version', numbersPlusOne) <br />
-      //[2, 3, 4, 5, 6] Sino que se creo una nueva copia con las modificaciones.<br />
-      <br />
-    </code>
+  <!-- Map -->
+  <div>
+    <div class="row-1 m-4 ps-2">
+      <h2 class="fs-2">Map</h2>
+      <p class="fs-4">Map es un método <b>inmutable</b> que nos permite iterar sobre un array y <b>crear uno nuevo</b>
+        con nuevas características o <b>transformaciones</b>. </p>
+    </div>
+    <h3 class="m-4 ps-2">Ejemplo</h3>
+    <div class="row-1 m-4 text-success bg-dark rounded">
+      <pre>
+        <code class="flex-row d-block m-4 fs-4 text-success bg-dark">
+          <br />
+          const numbers = [1, 2, 3, 4, 5]; <br />
+          const numbersPlusOne = numbers.map(number => number + 1);<br />
+          <br />
+          console.log('original', numbers) <br />
+          //[1, 2, 3, 4, 5] El array original no fue modificado <br />
+          <br />
+          console.log('new_version', numbersPlusOne) <br />
+          //[2, 3, 4, 5, 6] Sino que se creo una nueva copia con las modificaciones.<br />
+          <br />
+        </code>
+      </pre>
+    </div>
   </div>
+  <!-- ForEach -->
+  <div>
+    <div class="row-1 m-4 ps-2">
+      <h2 class="fs-2">ForEach</h2>
+      <p class="fs-4">Nos permite iterar sobre cada elemento de un array y ejecutar un callback que le pasamos como
+        argumento. </p>
+    </div>
+    <h3 class="m-4 ps-2">Ejemplo</h3>
+    <div class="row-1 m-4 text-success bg-dark rounded">
+      <pre>
+        <code class="flex-row d-block m-4 fs-4 text-success bg-dark">
+          <br />
+          [1,2,3].forEach(console.log) <br>
+          <br />
+          //expected output<br />
+          //item, index, array<br />
+          &nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [1,2,3]<br />
+          &nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [1,2,3]<br />
+          &nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [1,2,3]<br />
+          <br />
+        </code>
+      </pre>
+    </div>
+  </div>
+  <!-- Filter -->
+  <div>
+    <div class="row-1 m-4 ps-2">
+      <h2 class="fs-2">Filter</h2>
+      <p class="fs-4">Filter es un método <b>inmutable</b> que nos permite iterar sobre un array y crear un nuevo array
+        solo con los elementos que cumplan cierta condición.</p>
+    </div>
+    <h3 class="m-4 ps-2">Ejemplo</h3>
+    <div class="row-1 m-4 text-success bg-dark rounded">
+      <pre>
+        <code class="flex-row d-block m-4 fs-4 text-success bg-dark">
+          <br />
+          const animals = ['🐱', '🐶', '🦁', '🐍', '🐞'];<br>
+          const dog = animals.filter(animal => animal === '🐶');<br>
+          console.log('dog:', dog) /*expected output: 'dog: ['🐶']' */<br>
+          <br />
+
+          <br />
+        </code>
+      </pre>
+    </div>
+  </div>
+  <!-- Find -->
+  <div>
+    <div class="row-1 m-4 ps-2">
+      <h2 class="fs-2">Find</h2>
+      <p class="fs-4">Find es un método <b>inmutable</b> que nos ayuda a iterar sobre un array y encontrar el primer
+        elemento que coincida con una condición dada, si no hay algún elemento que coincida, entonces va a retornar
+        undefined.
+      </p>
+    </div>
+    <h3 class="m-4 ps-2">Ejemplo</h3>
+    <div class="row-1 m-4 text-success bg-dark rounded">
+      <pre>
+        <code class="flex-row d-block m-4 fs-4 text-success bg-dark">
+          <br />
+          const animals = ['🐱', '🐶', '🦁', '🐍', '🐞'];<br />
+          const snake = animals.find(item => item === '🐍');<br />
+          console.log(snake); //expected output -> '🐍'<br />
+        </code>
+      </pre>
+    </div>
+  </div>
+  <!-- Every -->
+  <div>
+    <div class="row-1 m-4 ps-2">
+      <h2 class="fs-2">Every</h2>
+      <p class="fs-4">Este método revisa todos lo elementos de un array, y si absolutamente todos cumplen una condición
+        dada retorna true, en caso contrario retorna false. No muta al array original.</p>
+    </div>
+    <h3 class="m-4 ps-2">Ejemplo</h3>
+    <div class="row-1 m-4 text-success bg-dark rounded">
+      <pre>
+        <code class="flex-row d-block m-4 fs-4 text-success bg-dark">
+          <br />
+          const numbers = [2,4,6,8]; <br />
+          const isEven = numbers.every((number) => number%2 === 0); /*revisa si todos los números dentro del array son
+          pares.*/<br />
+          console.log(isEven); // expected output -> true<br />
+        </code>
+      </pre>
+    </div>
+  </div>
+  <!-- Reduce -->
+  <div>
+    <div class="row-1 m-4 ps-2">
+      <h2 class="fs-2">Reduce</h2>
+      <p class="fs-4">El método reduce nos permite tomar todos los valores de un array y reducirlos a uno solo, este
+        método no retorna un array, solo retorna un valor. No modifica el array original, es inmutable.</p>
+    </div>
+    <h3 class="m-4 ps-2">Ejemplo</h3>
+    <div class="row-1 m-4 text-success bg-dark rounded">
+      <pre>
+        <code class="flex-row d-block m-4 fs-4 text-success bg-dark" ngNonBindable>
+
+          const numbers = [1, 2, 3, 4, 5];
+
+          const sum = numbers.reduce(
+          (accumulator, number) => {{
+          console.log(`accumulator: ${{accumulator}}, number: ${{number}}, return_value: ${{accumulator + number}}`);
+          return accumulator + number;
+          }},
+          5
+          );
+
+          console.log(sum) // 20
+
+          /* expected output: */
+          // primera vuelta -> accumulator: 5, number: 1, return_value: 6
+          // segunda vuelta -> accumulator: 6, number: 2, return_value: 8
+          // tercera vuelta -> accumulator: 8, number: 3, return_value: 11
+          // cuarta vuelta -> accumulator: 11, number: 4, return_value: 15
+          // quinta vuelta -> accumulator: 15, number: 5, return_value: 20
+          // final result -> 20
+        </code>
+      </pre>
+    </div>
+  </div>
+  <!-- Const y let -->
+  <!-- <div>
+    <div class="row-1 m-4 ps-2">
+      <h2 class="fs-2">Const y let</h2>
+      <p class="fs-4"></p>
+    </div>
+    <h3 class="m-4 ps-2">Ejemplo</h3>
+    <div class="row-1 m-4 text-success bg-dark rounded">
+      <code class="flex-row d-block m-4 fs-4 text-success bg-dark">
+
+      </code>
+    </div>
+  </div> -->
 </div>
