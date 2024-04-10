@@ -33,7 +33,7 @@ export class ExampleService {
   // para la transferencia de datos. En nuestro caso para los filtros, usamos lo siguiente:
   // {"tipo":["avance", "monto"],"objetivo":[["TERMINADA", "EN PROCESO"],[0,40]]}
   postDatos(dto: ExampleDto) {
-    console.log(`${this.baseUrl}/obras_municipio/obras/busqueda`);
+    //console.log(`${this.baseUrl}/obras_municipio/obras/busqueda`);
     return this.http.post<ExampleResponse>(`${this.baseUrl}/obras_municipio/obras/busqueda`, dto);
   }
 
