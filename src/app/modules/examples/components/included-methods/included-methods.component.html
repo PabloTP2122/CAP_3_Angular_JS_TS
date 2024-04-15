@@ -41,8 +41,8 @@
   <div>
     <div class="row-1 m-4 ps-2">
       <h2 class="fs-2">ForEach</h2>
-      <p class="fs-4">Nos permite iterar sobre cada elemento de un array y ejecutar un callback que le pasamos como
-        argumento. </p>
+      <p class="fs-4">Es un método <b>inmutable</b> que nos permite iterar sobre cada elemento de un array y ejecutar un
+        callback que le pasamos como argumento. </p>
     </div>
     <h3 class="m-4 ps-2">Ejemplo</h3>
     <div class="row-1 m-4 text-success bg-dark rounded">
@@ -159,6 +159,138 @@
       </pre>
     </div>
   </div>
+  <!-- TODO: agregar aquí métodos mutables -->
+  <div class="d-flex flex-column">
+    <h2 class="m-4 ps-2">Métodos mutables</h2>
+  </div>
+  <!-- .Push() -->
+  <div>
+    <div class="row-1 m-4 ps-2">
+      <h2 class="fs-2">.push()</h2>
+      <p class="fs-4">
+        <b>Uso Común:</b> Añadir elementos al final de un array. <br />
+        <b>Descripción:</b> Agrega uno o más elementos al final de un array y devuelve la nueva longitud del array.
+        <br />
+      </p>
+    </div>
+    <h3 class="m-4 ps-2">Ejemplo</h3>
+    <div class="row-1 m-4 text-success bg-dark rounded">
+      <code class="flex-row d-block m-4 fs-4 text-success bg-dark">
+        <br />
+        const frutas = ['manzana', 'banana'];<br />
+        <br />
+        frutas.push('naranja'); // Array resultante: ['manzana', 'banana', 'naranja']<br />
+        <br />
+      </code>
+    </div>
+  </div>
+  <!-- .Pop() -->
+  <div>
+    <div class="row-1 m-4 ps-2">
+      <h2 class="fs-2">.pop()</h2>
+      <p class="fs-4">
+        <b>Uso Común:</b> Eliminar el último elemento de un array. <br />
+        <b>Descripción:</b> Elimina el último elemento de un array y lo devuelve. Si el array está vacío, devuelve
+        undefined.
+        <br />
+      </p>
+    </div>
+    <h3 class="m-4 ps-2">Ejemplo</h3>
+    <div class="row-1 m-4 text-success bg-dark rounded">
+      <code class="flex-row d-block m-4 fs-4 text-success bg-dark">
+        <br />
+        const frutas = ['manzana', 'banana', 'naranja'];
+        <br />
+        frutas.pop(); // Retorna 'naranja', array resultante: ['manzana', 'banana']<br />
+        <br />
+      </code>
+    </div>
+  </div>
+  <!-- .shift() -->
+  <div>
+    <div class="row-1 m-4 ps-2">
+      <h2 class="fs-2">.shift()</h2>
+      <p class="fs-4">
+        <b>Uso Común:</b> Eliminar el primer elemento de un array. <br />
+        <b>Descripción:</b> Elimina el primer elemento de un array y lo devuelve. Si el array está vacío, devuelve
+        undefined.
+        <br />
+      </p>
+    </div>
+    <h3 class="m-4 ps-2">Ejemplo</h3>
+    <div class="row-1 m-4 text-success bg-dark rounded">
+      <code class="flex-row d-block m-4 fs-4 text-success bg-dark">
+        <br />
+        const frutas = ['manzana', 'banana'];<br />
+        frutas.unshift('naranja'); // Array resultante: ['naranja', 'manzana', 'banana']<br />
+      </code>
+    </div>
+  </div>
+  <!-- .unshift() -->
+  <div>
+    <div class="row-1 m-4 ps-2">
+      <h2 class="fs-2">.unshift()</h2>
+      <p class="fs-4">
+        <b>Uso Común:</b> Añadir elementos al principio de un array.<br />
+        <b>Descripción:</b> Agrega uno o más elementos al principio de un array y devuelve la nueva longitud del array.
+        <br />
+      </p>
+    </div>
+    <h3 class="m-4 ps-2">Ejemplo</h3>
+    <div class="row-1 m-4 text-success bg-dark rounded">
+      <code class="flex-row d-block m-4 fs-4 text-success bg-dark">
+        <br />
+        const frutas = ['manzana', 'banana'];<br />
+        <br />
+        frutas.push('naranja'); // Array resultante: ['manzana', 'banana', 'naranja']<br />
+        <br />
+      </code>
+    </div>
+  </div>
+  <!-- .splice() -->
+  <div>
+    <div class="row-1 m-4 ps-2">
+      <h2 class="fs-2">.splice()</h2>
+      <p class="fs-4">
+        <b>Uso Común:</b> Modificar el contenido de un array eliminando, reemplazando o añadiendo elementos.. <br />
+        <b>Descripción:</b> Cambia el contenido de un array eliminando o reemplazando elementos existentes y/o añadiendo
+        nuevos elementos.
+        <br />
+      </p>
+    </div>
+    <h3 class="m-4 ps-2">Ejemplo</h3>
+    <div class="row-1 m-4 text-success bg-dark rounded">
+      <code class="flex-row d-block m-4 fs-4 text-success bg-dark">
+        <br />
+        const frutas = ['manzana', 'banana', 'naranja'];<br />
+        <br />
+        frutas.splice(1, 1, 'kiwi'); // Retorna ['banana'], array resultante: ['manzana', 'kiwi', 'naranja']<br />
+        <br />
+      </code>
+    </div>
+  </div>
+  <!-- .sort() -->
+  <div>
+    <div class="row-1 m-4 ps-2">
+      <h2 class="fs-2">.sort()</h2>
+      <p class="fs-4">
+        <b>Uso Común:</b> Ordenar los elementos de un array. <br />
+        <b>Descripción:</b> Ordena los elementos de un array in-place y devuelve el array ordenado..
+        <br />
+      </p>
+    </div>
+    <h3 class="m-4 ps-2">Ejemplo</h3>
+    <div class="row-1 m-4 text-success bg-dark rounded">
+      <code class="flex-row d-block m-4 fs-4 text-success bg-dark">
+        <br />
+        const numeros = [1, 3, 2, 5, 4];<br />
+        <br />
+        numeros.sort(); // Retorna [1, 2, 3, 4, 5], array resultante en orden ascendente<br />
+        <br />
+      </code>
+    </div>
+  </div>
+
   <!-- Const y let -->
   <!-- <div>
     <div class="row-1 m-4 ps-2">
