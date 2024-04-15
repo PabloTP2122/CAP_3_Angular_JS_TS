@@ -16,9 +16,13 @@ export class Chart1VisualComponent implements OnInit {
 
   ngOnInit(): void {
     // El error que tenía fue un typo en getElementByTagName en lugar de getElementsByTagName
+    // Se extrae del DOM el primer elemento con la etiqueta SVG.
     const svg = this.element.nativeElement.getElementsByTagName('svg')[0];
+
+    // Se extraen las dimensiones del elemento SVG
     const dimensions = svg.getBoundingClientRect();
 
+    // Se extrae el with usando los datos para variarlo.
     this.width = dimensions.width / this.data.length;
 
     console.log(svg, svg.getBoundingClientRect());
