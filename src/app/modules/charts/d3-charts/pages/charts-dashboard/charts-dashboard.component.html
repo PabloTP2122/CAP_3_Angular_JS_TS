@@ -9,11 +9,13 @@
     </div>
     <div class="col-4">
       <div class="chart">
-        <app-chart-2-visual></app-chart-2-visual>
+        <app-chart-2-visual [data]="this.data$ | async" [labels]="labels"></app-chart-2-visual>
       </div>
     </div>
     <div class="col-4">
-      <div class="chart"></div>
+      <div class="chart">
+        <app-chart-3-visual [data]="this.data$ | async" [labels]="labels"></app-chart-3-visual>
+      </div>
     </div>
   </div>
   <!--  -->

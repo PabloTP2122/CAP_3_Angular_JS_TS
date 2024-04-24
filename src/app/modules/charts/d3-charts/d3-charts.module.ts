@@ -7,6 +7,7 @@ import { Chart1VisualComponent } from './pages/chart-1-visual/chart-1-visual.com
 import { Chart2LogicComponent } from './components/chart-2-logic/chart-2-logic.component';
 import { Chart2VisualComponent } from './pages/chart-2-visual/chart-2-visual.component';
 import { ChartsDashboardComponent } from './pages/charts-dashboard/charts-dashboard.component';
+import { Chart3VisualComponent } from './pages/chart-3-visual/chart-3-visual.component';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { ChartsDashboardComponent } from './pages/charts-dashboard/charts-dashbo
     Chart1VisualComponent,
     Chart2LogicComponent,
     Chart2VisualComponent,
-    ChartsDashboardComponent
+    ChartsDashboardComponent,
+    Chart3VisualComponent
   ],
   imports: [
     CommonModule,

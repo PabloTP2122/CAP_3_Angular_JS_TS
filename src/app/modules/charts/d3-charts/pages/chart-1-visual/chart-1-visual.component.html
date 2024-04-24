@@ -1,20 +1,41 @@
-<!-- <p>chart-1-visual works!</p> -->
+<!-- Colocando datos a nuestra gráfica de barras -->
+<!-- Binding data to our chart -->
 <svg>
-  <rect *ngFor="let item of data; index as idx" [attr.x]="idx * width" [attr.y]="250-item" [attr.width]="width"
-    [attr.height]="item">
+  <rect *ngFor="let item of data; index as idx" [attr.x]="idx * rectWidth + (0.5) * padding + outerPadding"
+    [attr.y]="innderHeight - (innderHeight   / max ) * item" [attr.width]="bandWidth"
+    [attr.height]="(innderHeight / max ) * item">
   </rect>
+
+
+
+
+
+
+
+  <text class="xlabels" text-rendering="optimizeLegibility" *ngFor="let item of labels; index as idx;"
+    [attr.y]="dimensions!.height - 15" [attr.x]="idx * rectWidth + 0.5 * padding + outerPadding + 0.5 * bandWidth">
+    {{item}}
+  </text>
 </svg>
+<!-- <svg>
+  <rect *ngFor="let item of data; index as idx" [attr.x]="idx * rectWidth + (0.5) * padding + outerPadding"
+    [attr.y]="dimensions!.height - (dimensions!.height   / max ) * item" [attr.width]="bandWidth"
+    [attr.height]="(dimensions!.height / max ) * item">
+  </rect>
+</svg> -->
 <!-- Directivas ngIf y ngFor, nueva sintaxis de angular 17 -->
 <!-- <svg>
   @for (datum of data; track $index) {
-  <rect [attr.x]="$index * width" [attr.y]="250 - datum" [attr.width]="width" [attr.height]="datum">
+  <rect [attr.x]="$index * rectWidth" [attr.y]="250 - datum" [attr.width]="rectWidth" [attr.height]="datum">
   </rect>
   }
 </svg> -->
+<!-- Ejemplo sobre posicionamiento con SVGs -->
+<!-- y = height-total - rect-height -->
 <!-- <svg>
-  <rect x="0" y="0" width="50" height="125"></rect>
-  <rect x="50" y="0" width="50" height="100"></rect>
-  <rect x="100" y="0" width="50" height="50"></rect>
+  <rect x="0" y="125" width="50" height="125"></rect>
+  <rect x="50" y="150" width="50" height="100"></rect>
+  <rect x="100" y="200" width="50" height="50"></rect>
   <rect x="150" y="0" width="50" height="75"></rect>
   <rect x="200" y="0" width="50" height="200"></rect>
 </svg> -->
