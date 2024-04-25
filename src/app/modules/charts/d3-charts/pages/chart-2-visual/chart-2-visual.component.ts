@@ -9,7 +9,7 @@ export class Chart2VisualComponent implements OnInit, OnChanges {
 
   // Decorador Input
   @Input() data: any;
-  @Input() labels: any;
+  labels: any;
 
   //data: number[] = [1, 1, 1];
   rectWidth = 80;
@@ -27,7 +27,7 @@ export class Chart2VisualComponent implements OnInit, OnChanges {
   // Margins
   left = 10; right = 20; bottom = 37; top = 15;
   innerWidth: number = 0;
-  innderHeight: number = 0;
+  innerHeight: number = 0;
 
 
 
@@ -45,7 +45,7 @@ export class Chart2VisualComponent implements OnInit, OnChanges {
 
     // Para construir margins
     this.innerWidth = this.dimensions!.width - this.left - this.right;
-    this.innderHeight = this.dimensions!.height - this.top - this.bottom;
+    this.innerHeight = this.dimensions!.height - this.top - this.bottom;
 
     this.setParams();
 
@@ -53,6 +53,8 @@ export class Chart2VisualComponent implements OnInit, OnChanges {
 
   setParams() {
     const data = this.data || [];
+    // Labels from data
+    this.labels = data.map((d: { tipo: string }) => d.tipo);
     // Se extrae el with usando los datos para variarlo.
     this.rectWidth = (this.innerWidth - 2 * this.outerPadding) / data.length;
     this.max = 1.3 * Math.max(...data.map((tipo: { monto: any; }) => tipo.monto)); //1.3=130%
@@ -64,7 +66,6 @@ export class Chart2VisualComponent implements OnInit, OnChanges {
 
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
     this.setParams();
   }
 

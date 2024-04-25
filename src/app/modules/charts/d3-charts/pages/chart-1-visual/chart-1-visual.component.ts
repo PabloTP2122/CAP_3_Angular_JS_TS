@@ -45,22 +45,31 @@ export class Chart1VisualComponent implements OnInit {
     //const dimensions = svg.getBoundingClientRect();
     this.dimensions = svg.getBoundingClientRect();
 
-    console.log('Dimensiones del SVG: ', this.dimensions)
-    // Se extrae el with usando los datos para variarlo.
-    // ! -> datos después de renderizar ? -> datos opcionales
-    this.rectWidth = (this.dimensions!.width - 2 * this.outerPadding) / this.data.length;
-
-    console.log('svg: ', svg);
-    // ... -> spread operator
-    this.max = 1.3 * Math.max(...this.data); //1.3=130%
-
-    // Para construir paddings
-    this.bandWidth = this.bandWidthCoef * this.rectWidth;
-    this.padding = (1 - this.bandWidthCoef) * this.rectWidth;
+    //console.log('Dimensiones del SVG: ', this.dimensions)
 
     // Para construir margins
+
     this.innerWidth = this.dimensions!.width - this.left - this.right;
+
     this.innderHeight = this.dimensions!.height - this.top - this.bottom;
+    // Se extrae el with usando los datos para variarlo.
+    // ! -> Le indica a JS que los datos estarán disponibles después de renderizar
+    // ? -> Le indica a JS que los datos son opcionales recibirlos
+
+    // Width of every rectangle  = (total width dimension - 2 * outer padding) / length of data
+    this.rectWidth = (this.innerWidth - 2 * this.outerPadding) / this.data.length;
+
+    //console.log('svg: ', svg);
+    // ... -> spread operator para extender o expandir el contenido de un array u objeto
+    this.max = 1.3 * Math.max(...this.data); //1.3=130%
+
+    // Para construir paddings internos entre barras
+    // Width of every bar = 80% * width of rectangle
+    this.bandWidth = this.bandWidthCoef * this.rectWidth;
+    // Inner paddigns = (20%) * width de rectangle
+    this.padding = (1 - this.bandWidthCoef) * this.rectWidth;
+
+
 
   }
 }

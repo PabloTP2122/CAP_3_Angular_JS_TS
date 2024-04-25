@@ -1,12 +1,13 @@
 <svg>
-  <line class="xaxis" [attr.x1]="0. * padding + outerPadding" [attr.y1]="innderHeight + top + 2"
-    [attr.x2]="innerWidth - (0.5 * padding + outerPadding)" [attr.y2]="innderHeight + top + 2"></line>
-  <rect *ngFor="let item of data; index as idx" [attr.x]="idx * rectWidth + (0.5) * padding + outerPadding"
-    [attr.y]="top + innderHeight - (innderHeight/max ) * item.monto" [attr.width]="bandWidth"
-    [attr.height]="(innderHeight / max ) * item.monto">
+  <line class="xaxis" [attr.x1]="0.5 * padding + outerPadding + left" [attr.y1]="innerHeight + top + 2"
+    [attr.x2]="innerWidth - (0.5 * padding + outerPadding) + left" [attr.y2]="innerHeight + top + 2"></line>
+  <rect *ngFor="let item of data; index as idx" [attr.x]="idx * rectWidth + (0.5) * padding + outerPadding + left"
+    [attr.y]="top + innerHeight - (innerHeight/max ) * item.monto" [attr.width]="bandWidth"
+    [attr.height]="(innerHeight / max ) * item.monto">
   </rect>
   <text class="xlabels" text-rendering="optimizeLegibility" *ngFor="let item of labels; index as idx;"
-    [attr.y]="dimensions!.height - 15" [attr.x]="idx * rectWidth + 0.5 * padding + outerPadding + 0.5 * bandWidth">
+    [attr.y]="dimensions!.height - 15"
+    [attr.x]="idx * rectWidth + 0.5 * padding + outerPadding + 0.5 * bandWidth + left">
     {{item}}
   </text>
 </svg>
