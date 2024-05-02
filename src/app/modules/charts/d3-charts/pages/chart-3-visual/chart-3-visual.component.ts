@@ -1,7 +1,6 @@
-import { Component, ElementRef, OnInit, ViewEncapsulation, Input, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, OnInit, Input, SimpleChanges } from '@angular/core';
 import { ITooltipConfig, ITooltipData } from '@models/charts.model';
 import * as d3 from 'd3';
-//npm i --save-dev @types/d3
 
 @Component({
   selector: 'app-chart-3-visual',
@@ -14,14 +13,14 @@ import * as d3 from 'd3';
       <rect class="svg-tooltip__symbol"></rect>
       <text class="svg-tooltip__value"
       [attr.y]="tooltipConfig.labels.height + 12"
-      [attr.x]="tooltipConfig.symbol.width + tooltipConfig.labels.textSeparator">
+      >
         <tspan class="svg-tooltip__value--key"></tspan>
         <tspan class="svg-tooltip__value--value"></tspan>
       </text>
     </g>
     </g>
     <style>
-      .chart1 { font-size: {{12}}px; }
+      .chart1 { font-size: {{tooltipConfig.labels.fontSize}}px; }
 
       .chart1 text.title { font-weight: bold;}
       .chart1 .svg-tooltip__value--value {
@@ -45,6 +44,7 @@ export class Chart3VisualComponent implements OnInit {
 
   host: any;
   svg: any;
+
   dataContainer: any;
   xAxisContainer: any;
   yAxisContainer: any;
@@ -75,8 +75,8 @@ export class Chart3VisualComponent implements OnInit {
   // Config
   private _tooltipConfig: ITooltipConfig = {
     background: {
-      xPadding: 10,
-      yPadding: 10,
+      xPadding: 15,
+      yPadding: 20,
       color: '#fff',
       opacity: 0.9,
       stroke: '#000',
@@ -86,7 +86,7 @@ export class Chart3VisualComponent implements OnInit {
     },
     labels: {
       symbolSize: 0,
-      fontSize: 10,
+      fontSize: 12,
       height: 20,
       textSeparator: 10
     },
@@ -108,6 +108,7 @@ export class Chart3VisualComponent implements OnInit {
     return this._tooltipConfig;
   }
 
+  // ElementRef -> modificar el DOM
   constructor(element: ElementRef) {
     //Selecciona los elementos root, document.documentElement.
     this.host = d3.select(element.nativeElement);
@@ -121,12 +122,20 @@ export class Chart3VisualComponent implements OnInit {
     this.svg = this.host.select("svg").attr('xmlns', 'http://www.w3.org/2000/svg');
     this.setDimensions();
     this.setElements();
+  }
 
+  setDimensions() {
+    this.dimensions = this.svg.node().getBoundingClientRect();
+
+    // Para construir margins
+    this.innerWidth = this.dimensions!.width - this.left - this.right;
+    this.innerHeight = this.dimensions!.height - this.top - this.bottom;
   }
 
   setElements() {
 
     // Tooltip
+    // svg -> svg no z-index
     this.tooltipContainer = this.svg.select('g.tooltipContainer').raise();
     /* this.tooltipContainer = this.svg.append('g').attr('class', 'tooltipContainer')
       .html(``) */
@@ -134,11 +143,7 @@ export class Chart3VisualComponent implements OnInit {
     this.dataContainer = this.svg.append('g').attr('class', 'dataContainer')
       .attr('transform', `translate(${this.left},${this.top})`);
     //console.log('SVG_chart_3: ', this.svg);
-    // Create axis
-    //1- Create axis
-    //2- Create axis container
-    //3- Position the axis
-    //4- Add the axis to the container
+
     this.xAxisContainer = this.svg.append('g').attr('class', 'xAxisContainer')
       .attr('transform', `translate(${this.left},${this.top + this.innerHeight})`);
 
@@ -175,6 +180,13 @@ export class Chart3VisualComponent implements OnInit {
       .text(tooltipData.value);
 
     //background
+    const tooltipDimensions: DOMRect = this.tooltipContainer.select('g.svg-tooltip').node().getBoundingClientRect();
+
+    this.tooltipContainer.select('rect.svg-tooltip__background')
+      .attr('width', tooltipDimensions.width + 2 * this._tooltipConfig.background.xPadding)
+      .attr('height', tooltipDimensions.height + 2 * this._tooltipConfig.background.yPadding)
+      .attr('x', -this._tooltipConfig.background.xPadding)
+      .attr('y', -this._tooltipConfig.background.yPadding);
 
     //resize
 
@@ -184,13 +196,6 @@ export class Chart3VisualComponent implements OnInit {
     this.tooltipContainer.attr('transform', `translate(${position[0]}, ${position[1]})`)
     this.setTooltipStyles();
 
-  }
-  setDimensions() {
-    this.dimensions = this.svg.node().getBoundingClientRect();
-
-    // Para construir margins
-    this.innerWidth = this.dimensions!.width - this.left - this.right;
-    this.innerHeight = this.dimensions!.height - this.top - this.bottom;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -225,7 +230,9 @@ export class Chart3VisualComponent implements OnInit {
       .data(promedios_tipos)
       .join(
         (enter: any) => enter.append('rect')
+          // documentación para manejo de eventos https://d3js.org/d3-selection/events
           .on('mousemove', (event: any, data: any) => { this.tooltip(event, data); })
+
           .attr('x', (promedio: { monto: number, tipo: string }) => this.scale_x(promedio.tipo))
           .attr('width', this.scale_x.bandwidth())
           .attr('height', (promedio: { monto: number, tipo: string }) => this.innerHeight - this.scale_y(promedio.monto))
@@ -246,6 +253,7 @@ export class Chart3VisualComponent implements OnInit {
     this.yAxisContainer.call(this.yAxis);
   }
 
+
   setAxisStyles() {
     // Estilizar el eje x
     this.xAxisContainer.selectAll('line').style('stroke', 'white');
@@ -260,7 +268,7 @@ export class Chart3VisualComponent implements OnInit {
 
   setTooltipStyles() {
     // Estilizar el eje x
-    this.tooltipContainer.selectAll('text').style('fill', 'white');
+    this.tooltipContainer.selectAll('text').style('fill', 'black');
   }
 
 
