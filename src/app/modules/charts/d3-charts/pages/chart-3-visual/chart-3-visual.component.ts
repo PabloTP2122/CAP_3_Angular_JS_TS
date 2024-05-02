@@ -12,14 +12,31 @@ import * as d3 from 'd3';
     <g class="svg-tooltip">
       <text class="svg-tooltip__title"></text>
       <rect class="svg-tooltip__symbol"></rect>
-      <text class="svg-tooltip__value">
+      <text class="svg-tooltip__value"
+      [attr.y]="tooltipConfig.labels.height + 12"
+      [attr.x]="tooltipConfig.symbol.width + tooltipConfig.labels.textSeparator">
         <tspan class="svg-tooltip__value--key"></tspan>
         <tspan class="svg-tooltip__value--value"></tspan>
       </text>
     </g>
     </g>
     <style>
+      .chart1 { font-size: {{12}}px; }
 
+      .chart1 text.title { font-weight: bold;}
+      .chart1 .svg-tooltip__value--value {
+        font-size: {{tooltipConfig.labels.fontSize}}px;
+        font-weight: bold;
+      }
+      .chart1 .svg-tooltip__background {
+        fill: {{tooltipConfig.background.color}};
+        fill-opacity: {{tooltipConfig.background.opacity}};
+        stroke: {{tooltipConfig.background.stroke}};
+        stroke-width: {{tooltipConfig.background.strokeWidth}}px;
+        rx: {{tooltipConfig.background.rx}}px;
+        ry: {{tooltipConfig.background.ry}}px;
+      }
+      <!-- .chart1 rect { fill: unset; } -->
     </style>
   </svg>`, // Aquí solo se coloca el template a usar
   styles: []
@@ -60,19 +77,38 @@ export class Chart3VisualComponent implements OnInit {
     background: {
       xPadding: 10,
       yPadding: 10,
-      color: 'red'
+      color: '#fff',
+      opacity: 0.9,
+      stroke: '#000',
+      strokeWidth: 2,
+      rx: 3,
+      ry: 3
     },
     labels: {
       symbolSize: 0,
       fontSize: 10,
       height: 20,
       textSeparator: 10
+    },
+    symbol: {
+      width: 6,
+      height: 6,
+    },
+    offset: {
+      x: 20,
+      y: 20
     }
   }
 
-  constructor(
-    element: ElementRef
-  ) {
+  get tooltipConfig() {
+    if (!this._tooltipConfig) {
+      this._tooltipConfig = this._tooltipConfig;
+    }
+
+    return this._tooltipConfig;
+  }
+
+  constructor(element: ElementRef) {
     //Selecciona los elementos root, document.documentElement.
     this.host = d3.select(element.nativeElement);
 
@@ -82,13 +118,14 @@ export class Chart3VisualComponent implements OnInit {
 
   ngOnInit(): void {
     //this.svg = d3.select("svg");
-    this.svg = this.host.select("svg");
+    this.svg = this.host.select("svg").attr('xmlns', 'http://www.w3.org/2000/svg');
     this.setDimensions();
     this.setElements();
 
   }
 
   setElements() {
+
     // Tooltip
     this.tooltipContainer = this.svg.select('g.tooltipContainer').raise();
     /* this.tooltipContainer = this.svg.append('g').attr('class', 'tooltipContainer')
@@ -112,14 +149,16 @@ export class Chart3VisualComponent implements OnInit {
 
   tooltip = (event: MouseEvent, d: { tipo: string, monto: number }): void => {
     //console.log(arguments)
+    let currencyFormat = (d: number) => d3.format('$,.2f')(d);
     console.log(event, d, this)
-    const value = Math.round(10 * d.monto) / 10;
+    const value = currencyFormat(Math.round(10 * d.monto) / 10);
+
     // convierte el elemento al formato de datos del tooltip
     const tooltipData: ITooltipData = {
       title: d.tipo,
       color: '',
-      key: 'Monto',
-      value: `$${value}`
+      key: 'Monto: ',
+      value: `${value}`
     }
 
     //title
@@ -160,7 +199,6 @@ export class Chart3VisualComponent implements OnInit {
     this.setAxis();
     this.setAxisStyles();
     this.draw();
-
   }
 
   setParameters() {
@@ -175,7 +213,7 @@ export class Chart3VisualComponent implements OnInit {
     this.scale_y.domain([0, max_monto]).range([this.innerHeight, 0])
   }
 
-  draw() {
+  draw(): void {
     // ! -> Le indica a JS que los datos estarán disponibles después de renderizar
     // ? -> Le indica a JS que los datos son opcionales recibirlos
     //console.log('data_montos_promedio', this.data)
@@ -185,12 +223,19 @@ export class Chart3VisualComponent implements OnInit {
 
     this.dataContainer?.selectAll('rect')
       .data(promedios_tipos)
-      .enter().append('rect')
-      .attr('x', (promedio: { monto: number, tipo: string }) => this.scale_x(promedio.tipo))
-      .attr('width', this.scale_x.bandwidth())
-      .attr('height', (promedio: { monto: number, tipo: string }) => this.innerHeight - this.scale_y(promedio.monto))
-      .attr('y', (promedio: { monto: number, tipo: string }) => this.scale_y(promedio.monto))
-      .on('mousemove', this.tooltip);
+      .join(
+        (enter: any) => enter.append('rect')
+          .on('mousemove', (event: any, data: any) => { this.tooltip(event, data); })
+          .attr('x', (promedio: { monto: number, tipo: string }) => this.scale_x(promedio.tipo))
+          .attr('width', this.scale_x.bandwidth())
+          .attr('height', (promedio: { monto: number, tipo: string }) => this.innerHeight - this.scale_y(promedio.monto))
+          .attr('y', (promedio: { monto: number, tipo: string }) => this.scale_y(promedio.monto)),
+        (update: any) => update,
+        (exit: { remove: () => any; }) => exit.remove()
+      );
+
+    // Mueve el tooltip al frente
+    this.tooltipContainer.raise();
   }
 
   setAxis() {
