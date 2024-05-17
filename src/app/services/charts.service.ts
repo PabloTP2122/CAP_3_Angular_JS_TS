@@ -14,8 +14,13 @@ export class ChartsService {
   constructor(private http: HttpClient
   ) { }
 
+  // Se obtienen los montos promedio de las obras realizadas por el municipio.
   getMontosPromedio(): Observable<any> {
-    return this.http.get<ReporteSimas>(`${this.baseUrl}/stats/reporte_simas`)
+    return this.http.get<ReporteSimas>(`${this.baseUrl}/stats/reporte_municipio`)
       .pipe(map((res: ReporteSimas) => res.montoPromedio));
+  }
+  // Obtiene los reportes atendidos por SIMAS Torreón desde 2021 hasta 2024
+  getReportesAtendidosSimasTorreon() {
+    return this.http.get(`${this.baseUrl}/stats/reportes_atendidos_simas_torreon`)
   }
 }

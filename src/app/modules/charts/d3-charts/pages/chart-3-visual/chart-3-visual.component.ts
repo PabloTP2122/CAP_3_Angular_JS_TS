@@ -38,7 +38,11 @@ import * as d3 from 'd3';
       <!-- .chart1 rect { fill: unset; } -->
     </style>
   </svg>`, // Aquí solo se coloca el template a usar
-  styles: []
+  styles: [`svg {
+    background-color: rgb(0, 0, 0);
+    width: 100%;
+    height: 100%;
+  }`]
 })
 export class Chart3VisualComponent implements OnInit {
 
@@ -200,6 +204,8 @@ export class Chart3VisualComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (!this.svg) return;
+
+    this.data = this.data.sort((a: any, b: any) => b.monto - a.monto);
     this.setParameters();
     this.setAxis();
     this.setAxisStyles();
