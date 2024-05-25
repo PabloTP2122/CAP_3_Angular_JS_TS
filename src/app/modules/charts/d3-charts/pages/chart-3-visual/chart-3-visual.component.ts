@@ -159,7 +159,7 @@ export class Chart3VisualComponent implements OnInit {
   tooltip = (event: MouseEvent, d: { tipo: string, monto: number }): void => {
     //console.log(arguments)
     let currencyFormat = (d: number) => d3.format('$,.2f')(d);
-    console.log(event, d, this)
+    //console.log(event, d, this)
     const value = currencyFormat(Math.round(10 * d.monto) / 10);
 
     // convierte el elemento al formato de datos del tooltip
@@ -196,7 +196,7 @@ export class Chart3VisualComponent implements OnInit {
 
     //set position
     const position = d3.pointer(event, this.svg.node())
-    console.log(position);
+    //console.log(position);
     this.tooltipContainer.attr('transform', `translate(${position[0]}, ${position[1]})`)
     this.setTooltipStyles();
 
@@ -230,7 +230,7 @@ export class Chart3VisualComponent implements OnInit {
     //console.log('data_montos_promedio', this.data)
     // [{monto: 1213, tipo: string}, {monto: 1213, tipo: string}, {monto: 1213, tipo: string}]
     const promedios_tipos = this.data?.map((promedios_tipo: { monto: number, tipo: string }) => promedios_tipo) || [];
-    console.log('Data_montos_promedio', promedios_tipos);
+    //console.log('Data_montos_promedio', promedios_tipos);
 
     this.dataContainer?.selectAll('rect')
       .data(promedios_tipos)

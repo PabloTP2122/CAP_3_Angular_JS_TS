@@ -20,7 +20,8 @@ export class ChartsService {
       .pipe(map((res: ReporteSimas) => res.montoPromedio));
   }
   // Obtiene los reportes atendidos por SIMAS Torreón desde 2021 hasta 2024
-  getReportesAtendidosSimasTorreon() {
+  getReportesAtendidosSimasTorreon(): Observable<any> {
     return this.http.get(`${this.baseUrl}/stats/reportes_atendidos_simas_torreon`)
+      .pipe(map((res: any) => res['grafica_reportes_resumen']));
   }
 }
