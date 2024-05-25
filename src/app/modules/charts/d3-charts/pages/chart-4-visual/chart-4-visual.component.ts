@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ElementRef, OnChanges, SimpleChange, ViewEncapsulation, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, ElementRef, OnChanges, SimpleChange, ViewEncapsulation, SimpleChanges, HostListener } from '@angular/core';
 import { ITooltipConfig, ITooltipData } from '@models/charts.model';
 import * as d3 from 'd3';
 
@@ -38,7 +38,11 @@ import * as d3 from 'd3';
   </style>
 </svg>`,
   //styleUrl: './chart-4-visual.component.scss'
-  styles: [``]
+  styles: [
+    `svg {
+      width: 100%;
+      height: 100%;
+    }`]
 })
 export class Chart4VisualComponent implements OnInit, OnChanges {
 
@@ -72,14 +76,14 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
 
   // Dimensiones
   dimensions?: DOMRect;
-  innerWidth: number = 0;
-  innerHeight: number = 0;
+  innerWidth?: any;
+  innerHeight?: any;
 
   margins = {
     left: 40,
     right: 20,
     top: 10,
-    bottom: 40
+    bottom: 70
   };
 
   // Escalas
@@ -98,6 +102,8 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
 
   //line generator
   line: any;
+
+  generalContainer: any;
 
   // Getters
   //TODO: adaptar a caso de uso actual (pensar en reutilización de código para obras y reportes)
@@ -128,7 +134,7 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
   private _tooltipConfig: ITooltipConfig = {
     background: {
       xPadding: 10,
-      yPadding: 10,
+      yPadding: 20,
       color: '#fff',
       opacity: 0.9,
       stroke: '#000',
@@ -147,8 +153,8 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
       height: 0,
     },
     offset: {
-      x: 5,
-      y: 5
+      x: 15,
+      y: 15
     }
   }
 
@@ -160,6 +166,8 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
     return this._tooltipConfig;
   }
 
+
+
   constructor(element: ElementRef) {
     //Selecciona los elementos root, document.documentElement.
     this.host = d3.select(element.nativeElement);
@@ -170,7 +178,12 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     // Selecciona el svg padre de la gráfica de este componente
-    this.svg = this.host.select('svg');
+    this.svg = this.host
+      .select('svg')
+      .attr('xmlns', 'http://www.w3.org/2000/svg')
+      // viewBox (Para redimensionar y que la gráfica se muestre completa) -> viewBox(min-x min-y width height)
+      .attr('viewBox', `0 0 ${this.innerWidth} ${this.innerHeight}`)
+      .attr('preserveAspectRatio', 'xMidYMid meet');
     this.setDimensions();
     this.setElements();
 
@@ -186,17 +199,16 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
 
   // Define dimensiones
   private setDimensions() {
+    // General container para mejorar estilos al redimensionar pantalla
+    this.generalContainer = this.host.node().getBoundingClientRect();
+
     // Se extraen las dimensiones del SVG que contendrá a la gráfica.
     this.dimensions = this.svg.node().getBoundingClientRect();
     //console.log('Dimensiones svg: ', this.dimensions)
 
     // Se define innerWidth e innerHeight (Ver imagen de gráfica)
     this.innerWidth = this.dimensions!.width - this.margins.left - this.margins.right;
-    this.innerHeight = this.dimensions!.height - this.margins.top - this.margins.right;
-
-    // viewBox (Para redimensionar y que la gráfica se muestre completa) -> viewBox(min-x min-y width height)
-    //this.svg.attr('viewBox', [0, 0, this.dimensions!.width, this.dimensions!.height]);
-    this.svg.attr('viewBox', [0, 0, this.dimensions!.width, this.dimensions!.height]);
+    this.innerHeight = this.dimensions!.height - this.margins.top - this.margins.bottom;
 
   }
 
@@ -273,20 +285,28 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
     //console.log('Reportes_atendidos_simas', this.data);
   }
 
+  @HostListener('window:resize')
+  onResize() {
+    this.setDimensions();
+    this.setParameters();
+    this.setAxis();
+    //this.setAxisStyles();
+    this.draw();
+  }
+
   /*
   Métodos que se sejecutan cada vez que hay un cambio
   en el ciclo de vida de la gráfica.
   Por ejemplo, cuando cambien los datos.
    */
 
-  setParams() {
+  setParameters() {
     const data = this.lineData;
     //TODO: Colocar dropdown para cambiar el año
     const dataReportes = !this.data ? [] : this.data;
     const anio = "2021"
     const dataReportesAnio = dataReportes.filter((reporte: any) => reporte.anio === anio);
-    // TODO: si son más de 4 meses,
-    //colocarlos de dos en dos para que se muestren correctamente o pensar en otra solición (letra pequeña)
+
     const xDataMonths = dataReportesAnio.map((reporte: any) => reporte.mes);
     const yDataSolvedReports = dataReportesAnio.map((reporte: any) => reporte.dato);
     const colorsData = dataReportesAnio.map((reporte: any) => reporte.categoria);
@@ -380,10 +400,10 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
 
     //background
     const tooltipDimensions: DOMRect = this.tooltipContainer.select('g.svg-tooltip').node().getBoundingClientRect();
-
+    // Tamaño de contenedor para el tooltip
     this.tooltipContainer.select('rect.svg-tooltip__background')
-      .attr('width', tooltipDimensions.width + 0.5 * this._tooltipConfig.background.xPadding)
-      .attr('height', tooltipDimensions.height + 0.5 * this._tooltipConfig.background.yPadding)
+      .attr('width', tooltipDimensions.width + 1.6 * this._tooltipConfig.background.xPadding)
+      .attr('height', tooltipDimensions.height + 0.8 * this._tooltipConfig.background.yPadding)
       .attr('x', -this._tooltipConfig.background.xPadding)
       .attr('y', -this._tooltipConfig.background.yPadding);
 
@@ -431,9 +451,36 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
       .style('fill', 'none')
       .style('stroke-width', '3px')
       .merge(lines)
+      .style('stroke', (d: any) => this.colors(d.name))
+      .attr('d', (d: any) => this.line(d.data))
+      .attr('stroke-dasharray', function (this: SVGPathElement) {
+        const totalLength = this.getTotalLength();
+        return `${totalLength} ${totalLength}`;
+      })
+      .attr('stroke-dashoffset', function (this: SVGPathElement) {
+        const totalLength = this.getTotalLength();
+        return totalLength;
+      })
+      .transition()
+      .duration(3000)
+      .attr('stroke-dashoffset', 0);
+
+    // Actualización de líneas existentes
+    lines.transition()
+      .duration(3000)
       .attr('d', (d: any) => this.line(d.data))
       .style('stroke', (d: any) => this.colors(d.name))
-      ;
+      .attr('stroke-dasharray', function (this: SVGPathElement) {
+        const totalLength = this.getTotalLength();
+        return `${totalLength} ${totalLength}`;
+      })
+      .attr('stroke-dashoffset', function (this: SVGPathElement) {
+        const totalLength = this.getTotalLength();
+        return totalLength;
+      })
+      .transition()
+      .duration(2000)
+      .attr('stroke-dashoffset', 0);
 
     //exit
     lines.exit().remove();
@@ -450,9 +497,17 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
       .attr('cx', (d: any) => this.xScale(d.x) + this.xScale.bandwidth() / 2)
       .attr('cy', (d: any) => this.yScale(d.y))
       .style('fill', (d: any) => this.colors(d.name))
-      .style('opacity', 0.7)
-      .on('mouseenter', (event: any, data: any) => {
+      .attr('opacity', 0.8)
+      .on('mouseover', (event: any, data: any) => {
         this.tooltip(event, data);
+        d3.select(event.currentTarget)
+          .style("stroke", "black")
+          .style("opacity", 1)
+      })
+      .on('mouseout', (event: any) => {
+        d3.select(event.currentTarget)
+          .style("stroke", "none")
+          .style("opacity", 0.8);
       });
 
     // Mueve el tooltip al frente tooltip
@@ -467,7 +522,7 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
 
   //
   updateChart() {
-    this.setParams();
+    this.setParameters();
     this.setAxis();
     this.setLabels();
     this.setLegend();
