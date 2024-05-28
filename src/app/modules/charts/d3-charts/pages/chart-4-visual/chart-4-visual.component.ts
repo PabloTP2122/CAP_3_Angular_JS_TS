@@ -9,7 +9,6 @@ import * as d3 from 'd3';
   <rect class="svg-tooltip__background"></rect>
   <g class="svg-tooltip">
     <text class="svg-tooltip__title"></text>
-    <rect class="svg-tooltip__symbol"></rect>
     <text class="svg-tooltip__value"
     [attr.y]="tooltipConfig.labels.height + 12"
     >
@@ -56,7 +55,6 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
   yAxisContainer: any;
   legendContainer: any;
   tooltipContainer: any;
-  circlesContainer: any;
 
   // Contenedores etiquetas
 
@@ -65,7 +63,14 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
   yLabel: any;
 
   // ----- Datos de entrada -----
+  // 3 formas de compartir datos en Angular
+  // 1 - Inputs (Componente padre a componente hijo) y Outputs (Componente hijo a componente padre) -> Componentes
+  // 2 - Servicios (Puede comunicarse con toda la aplicación)
+  // 3 - RxJs con Behavior subject o signals. (En URBISMap se usa en el mapa)
+
+  // Los datos de data chart-dashboard / servicio / API
   @Input() data: any;
+  // Solo del componente padre
   @Input() colorPallete: any;
   //@Input() reportesAtendidosSimasT: any;
 
@@ -87,9 +92,9 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
   };
 
   // Escalas
-  xScale: any;
-  yScale: any;
-  colors: any;
+  xScale: any; // Band
+  yScale: any; // Lineal
+  colors: any; // Ordinal
 
   // Ejes
   xAxis: any;
@@ -108,7 +113,7 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
   // Getters
   //TODO: adaptar a caso de uso actual (pensar en reutilización de código para obras y reportes)
   get lineData() {
-    const anio = "2021";
+    const anio = "2022";
     if (!this.data) { return [] }
     /* return dataReportesXAnio.map((reporte: any) => {
       return {
@@ -290,7 +295,6 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
     this.setDimensions();
     this.setParameters();
     this.setAxis();
-    //this.setAxisStyles();
     this.draw();
   }
 
@@ -303,13 +307,19 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
   setParameters() {
     const data = this.lineData;
     //TODO: Colocar dropdown para cambiar el año
+    // If con operador ternario
+    // (condición) ? primer resultado del condicional : else
+    // !this.data ? [] : this.data;
     const dataReportes = !this.data ? [] : this.data;
-    const anio = "2021"
+
+    const anio = "2022"
     const dataReportesAnio = dataReportes.filter((reporte: any) => reporte.anio === anio);
 
     const xDataMonths = dataReportesAnio.map((reporte: any) => reporte.mes);
     const yDataSolvedReports = dataReportesAnio.map((reporte: any) => reporte.dato);
+
     const colorsData = dataReportesAnio.map((reporte: any) => reporte.categoria);
+
     console.log(`Reportes: ${anio}`, dataReportesAnio, '\n',
       `mes: ${xDataMonths}`, '\n',
       `reportes: ${yDataSolvedReports}`, '\n',
@@ -317,9 +327,11 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
 
     // definir los dominios (Con los datos se define el dominio)
     const xDomain: any = !xDataMonths ? [0, Date.now] : xDataMonths;
+
     console.log('xDomain:', xDomain);
     const maxVlues: any = data.map((series) => d3.max(series.data, (d: any) => d.y));
     console.log('maxVlues', maxVlues);
+
     const yDomain: any = !this.data ? [0, 100] : [0, d3.max(maxVlues)];
     console.log('yDomain', yDomain)
     const colorsDomain = this.tipos;
