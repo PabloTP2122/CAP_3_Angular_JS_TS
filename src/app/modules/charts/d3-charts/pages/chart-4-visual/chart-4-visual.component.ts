@@ -87,7 +87,7 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
   margins = {
     left: 40,
     right: 20,
-    top: 45,
+    top: 60,
     bottom: 70
   };
 
@@ -110,10 +110,13 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
 
   generalContainer: any;
 
+  // Define el año para los reportes
+  anio: string = '2021';
+
   // Getters
   //TODO: adaptar a caso de uso actual (pensar en reutilización de código para obras y reportes)
   get lineData() {
-    const anio = "2022";
+    const anio = this.anio;
     if (!this.data) { return [] }
     /* return dataReportesXAnio.map((reporte: any) => {
       return {
@@ -250,7 +253,7 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
     this.title = this.svg
       .append('g')
       .attr('class', 'titleContainer')
-      .attr('transform', `translate(${this.margins.left + 0.5 * this.innerWidth}, ${this.margins.top * 0.5})`)
+      .attr('transform', `translate(${this.margins.left + 0.5 * this.innerWidth}, ${this.margins.top - 45})`)
       .append('text')
       .attr('class', 'title')
       .style('text-anchor', 'middle');
@@ -309,7 +312,7 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
     // !this.data ? [] : this.data;
     const dataReportes = !this.data ? [] : this.data;
 
-    const anio = "2022"
+    const anio = this.anio;
     const dataReportesAnio = dataReportes.filter((reporte: any) => reporte.anio === anio);
 
     const xDataMonths = dataReportesAnio.map((reporte: any) => reporte.mes);
@@ -353,7 +356,8 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
       .y((d: any) => this.yScale(d.y));
   }
   setLabels() {
-
+    const title = `Reportes atendidos por SIMAS en ${this.anio}`;
+    this.title.text(title);
   }
   setLegend() {
     // 1.- Seleccionar los contenedores y enlazar los datos
@@ -415,7 +419,7 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
         totalPadding += g.node().getBBox().width + 10;
       })
 
-    // 7.- Reposicionar las leyendas (Se reposiciona la leyenda inicial)
+    // 7.- Reposicionar las leyendas (Se reposiciona la leyenda del inicio)
     const legendWidth = this.legendContainer.node().getBBox().width;
 
     this.legendContainer
