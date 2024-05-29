@@ -33,7 +33,7 @@ import * as d3 from 'd3';
       rx: {{tooltipConfig.background.rx}}px;
       ry: {{tooltipConfig.background.ry}}px;
     }
-    <!-- .chart4 rect { fill: unset; } -->
+    .chart4 g.legendContainer rect{ fill: unset; }
   </style>
 </svg>`,
   //styleUrl: './chart-4-visual.component.scss'
@@ -87,7 +87,7 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
   margins = {
     left: 40,
     right: 20,
-    top: 10,
+    top: 45,
     bottom: 70
   };
 
@@ -274,11 +274,8 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
     this.legendContainer = this.svg
       .append('g')
       .attr('class', 'legendContainer')
-      .attr('transform', `translate(${this.margins.left}, ${this.dimensions!.height - 0.5 * this.margins.bottom + 10})`);
+      .attr('transform', `translate(${this.margins.left + 10}, ${this.margins.top - 25})`);
 
-    // Add dots (agregan los puntos de los datos de los jsons)
-    /* this.circlesContainer = this.svg.append('g')
-      .attr('class', 'circlesContainer'); */
 
   }
 
@@ -359,6 +356,72 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
 
   }
   setLegend() {
+    // 1.- Seleccionar los contenedores y enlazar los datos
+    const itemContainers = this.legendContainer.selectAll('g.legend-item')
+      .data(this.tipos);
+
+    // 2.- enter (Se usa el método enter de D3.js)
+    //  2.1 - Agregar nuevos contenedores
+    //  2.2 - Agregar el cuadrado de color + texto de leyenda
+    let squereSize = 15;
+    const newItems = itemContainers.enter()
+      .append('g')
+      .attr('class', 'legend-item')
+      .each(function (this: any, d: any) {
+        const g = d3.select(this);
+        g.append("rect")
+          .attr("class", "legend-icon")
+          .attr("x", (d, i) => -20 + i * (squereSize + 150))
+          .attr("y", (d, i) => -10)
+          .attr("width", squereSize)
+          .attr("height", squereSize);
+
+        g.append("text")
+          .attr('class', 'legend-label')
+          /* .attr('x', 15) */
+          .style('font-size', '0.9rem')
+          .attr("text-anchor", "left")
+          .style("alignment-baseline", "middle");
+        //console.log(g, d);
+      });
+
+
+    // 3.- merge (Se usa el método merge de D3.js)
+    //  3.1 - Actualizar el cuadarado y el texto (color y label)
+    //  3.2 - Enlace de eventos click y hover
+    const mergeSelection = newItems.merge(itemContainers);
+    mergeSelection.selectAll('rect.legend-icon')
+      .style("fill", (d: any) => this.colors(d))
+      .style("stroke", "none");
+
+    mergeSelection.selectAll('text.legend-label')
+      .text((d: any) => d)
+
+
+    // 4.- Actualizar estado
+    //  4.1 - Transición
+    //  4.2 - Definir la opacidad (Si está activa 1 si no 0.4)
+
+
+    // 5.- Remueve los grupos no usados.
+    itemContainers.exit().remove();
+
+    // 6.- Reposiciónar los elementos
+    let totalPadding = 0;
+    this.legendContainer.selectAll('g.legend-item')
+      .each(function (this: any) {
+        const g = d3.select(this);
+        g.attr('transform', `translate(${totalPadding}, 0)`);
+        totalPadding += g.node().getBBox().width + 10;
+      })
+
+    // 7.- Reposicionar las leyendas (Se reposiciona la leyenda inicial)
+    const legendWidth = this.legendContainer.node().getBBox().width;
+
+    this.legendContainer
+      .attr('transform', `translate(${this.margins.left + 0.5 * (this.innerWidth - legendWidth)}, ${this.margins.top - 25})`)
+
+
 
   }
   setAxis() {
