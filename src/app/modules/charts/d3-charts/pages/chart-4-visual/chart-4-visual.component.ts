@@ -453,7 +453,7 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
   tooltip = (event: MouseEvent, d: { x: string, y: number, name: string }): void => {
 
     this.showTooltip();
-    console.log(event, d, this)
+    /* console.log(event, d, this) */
     const value = d.y;
 
     // convierte el elemento al formato de datos del tooltip

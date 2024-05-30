@@ -6,6 +6,7 @@ import { IncludedMethodsComponent } from './components/included-methods/included
 import { FiltersApiCallComponent } from './components/filters-api-call/filters-api-call.component';
 import { CssGridComponent } from './components/css-grid/css-grid.component';
 import { FlexboxComponent } from './components/flexbox/flexbox.component';
+import { CssAnimationsComponent } from './components/css-animations/css-animations.component';
 
 
 @NgModule({
@@ -14,6 +15,7 @@ import { FlexboxComponent } from './components/flexbox/flexbox.component';
     FiltersApiCallComponent,
     CssGridComponent,
     FlexboxComponent,
+    CssAnimationsComponent,
   ],
   imports: [
     CommonModule,

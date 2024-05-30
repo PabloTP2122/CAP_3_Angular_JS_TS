@@ -1,0 +1,76 @@
+<html lang="en">
+
+<body>
+  <header class="p-4">
+    <h1 class="h1">Transiciones y animaciones</h1>
+  </header>
+  <main class="p-4">
+    <h2 class="pb-4 h2">Transiciones</h2>
+    <div class="main__general-container">
+      <div class="general-container__button-container">
+        <button class="main__button-transition-css">CSS transition hover</button>
+      </div>
+      <div class="general-container__list">
+        <h2>Para las transiciones se requiere</h2>
+        <ol class="list">
+          <li>
+            <h4>La propiedad CSS que se quiere cambiar desde un estado inicial a un estado final.
+              <br> Pueden ser background-color, color, width...
+              <br>
+              <br> En este ejemplo es:
+            </h4>
+            <br>
+            <pre>
+              <code>trensition-property: background-color;</code>
+            </pre>
+          </li>
+          <li>
+            <h4>La duración. Es decir, el tiempo que demora en cambiar</h4>
+            <br>
+            <pre>
+              <code>
+                transition-duration: 0.5s;
+              </code>
+            </pre>
+          </li>
+        </ol>
+        <h2>Además, se pueden tener las siguientes opciones para una transición más fina</h2>
+        <ol class="list">
+          <li>
+            <h4>Transition timing function: </h4>
+            <ul>
+              <li>ease: (default) Inicia lento y luego va más rápido, finaliza lento</li>
+              <li>linear: El cambio ocurre con la misma tasa de cambio</li>
+              <li>ease-in: El cambio comienaza lento y va rápido antes del final</li>
+              <li>ease-out: El cambio comienaza rápido y va lento antes del final</li>
+              <li>ease-in-out: El cambio comienza lento, luego va rápido y al final es lento</li>
+            </ul>
+            <br>
+            <pre>
+              <code>transition-timing-function: ease;</code>
+            </pre>
+          </li>
+          <li>
+            <h4>Transition delay</h4>
+            <br>
+            <pre>
+              <code>transition-delay: 2s;</code>
+            </pre>
+          </li>
+        </ol>
+      </div>
+    </div>
+    <div>
+      <div class="transitions__container">
+        <div id="ease" class="move">Ease</div>
+        <div id="linear" class="move">Linear</div>
+        <div id="ease-in" class="move">Ease-in</div>
+        <div id="ease-out" class="move">Ease-out</div>
+        <div id="ease-in-out" class="move">Ease-In-Out</div>
+      </div>
+    </div>
+  </main>
+
+</body>
+
+</html>

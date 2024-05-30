@@ -2,6 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { IncludedMethodsComponent } from './components/included-methods/included-methods.component';
 import { FiltersApiCallComponent } from './components/filters-api-call/filters-api-call.component';
+import { CssGridComponent } from './components/css-grid/css-grid.component';
+import { CssAnimationsComponent } from './components/css-animations/css-animations.component';
+import { FlexboxComponent } from './components/flexbox/flexbox.component';
 
 const routes: Routes = [
   {
@@ -19,6 +22,18 @@ const routes: Routes = [
   {
     path: 'filters-api',
     component: FiltersApiCallComponent
+  },
+  {
+    path: 'css-grid',
+    component: CssGridComponent
+  },
+  {
+    path: 'css-flex',
+    component: FlexboxComponent
+  },
+  {
+    path: 'css-animations',
+    component: CssAnimationsComponent
   }
 ];
 

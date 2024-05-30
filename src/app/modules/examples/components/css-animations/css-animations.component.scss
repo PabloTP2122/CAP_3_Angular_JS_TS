@@ -1,0 +1,86 @@
+div.general-container__button-container {
+  width: 200px;
+  height: 20px;
+}
+
+button.main__button-transition-css {
+  font-size: 28px;
+  color: darkblue;
+  border: none;
+  background-color: LightGreen;
+  border-radius: 10px;
+  /* transition-property: background-color color width;*/
+  /* transition-property: all; */
+  /* transition-duration: 3000ms;
+  transition-timing-function: ease; */
+  transition: background-color 0.5s ease, color 2s ease-in;
+}
+
+button:hover {
+  background-color: darkblue;
+  color: LightGreen;
+}
+
+////////////////////////////////////
+div.main__general-container {
+  display: grid;
+  grid-template-columns: 0.5fr 1fr;
+  grid-template-rows: 1fr;
+}
+
+ol.list {
+  list-style-type: decimal;
+}
+
+li {
+  font-size: x-large;
+  font-weight: 600;
+}
+
+////////////////  Transitions  ///////////////////
+.transitions__container {
+  width: 960px;
+}
+
+.move {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 2rem;
+  width: 150px;
+  height: 50px;
+  padding: 10px 15px;
+  background-color: rgb(30, 31, 30);
+  color: #00ee0c;
+  line-height: 50px;
+  text-align: center;
+  border-radius: 0.5em;
+  font-size: 20px;
+  transition-property: translate();
+  transition-duration: 3s;
+}
+
+#ease {
+  transition-timing-function: ease;
+}
+
+#linear {
+  transition-timing-function: linear;
+}
+
+#ease-in {
+  transition-timing-function: ease-in;
+}
+
+#ease-out {
+  transition-timing-function: ease-out;
+}
+
+#ease-in-out {
+  transition-timing-function: ease-in-out;
+}
+
+.move:hover {
+  transform: translate(900px, 0);
+}
