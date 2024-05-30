@@ -13,9 +13,11 @@ button.main__button-transition-css {
   /* transition-property: all; */
   /* transition-duration: 3000ms;
   transition-timing-function: ease; */
-  transition: background-color 0.5s ease, color 2s ease-in;
+  transition: background-color 0.5s ease, color 0.5s ease-in;
 }
 
+// Pseudoclases y pseudoelementos
+// https://developer.mozilla.org/es/docs/Learn/CSS/Building_blocks/Selectors/Pseudo-classes_and_pseudo-elements
 button:hover {
   background-color: darkblue;
   color: LightGreen;
@@ -37,7 +39,7 @@ li {
   font-weight: 600;
 }
 
-////////////////  Transitions  ///////////////////
+////////////////  Transition options  ///////////////////
 .transitions__container {
   width: 960px;
 }
@@ -83,4 +85,18 @@ li {
 
 .move:hover {
   transform: translate(900px, 0);
+}
+
+////////////////////  Transform: translate  ///////////////////////
+img {
+  width: 300px;
+  display: block;
+  margin: auto;
+  margin-top: 200px;
+  transition: transform 2s;
+  border-radius: 10px;
+}
+
+img:hover {
+  transform: translate(-500px, 200px);
 }

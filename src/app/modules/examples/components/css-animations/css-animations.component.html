@@ -5,7 +5,7 @@
     <h1 class="h1">Transiciones y animaciones</h1>
   </header>
   <main class="p-4">
-    <h2 class="pb-4 h2">Transiciones</h2>
+    <h2 class="pb-4 h2 text-center">Transiciones</h2>
     <div class="main__general-container">
       <div class="general-container__button-container">
         <button class="main__button-transition-css">CSS transition hover</button>
@@ -21,7 +21,7 @@
             </h4>
             <br>
             <pre>
-              <code>trensition-property: background-color;</code>
+              <code>trensition-property: background-color color;</code>
             </pre>
           </li>
           <li>
@@ -67,6 +67,48 @@
         <div id="ease-in" class="move">Ease-in</div>
         <div id="ease-out" class="move">Ease-out</div>
         <div id="ease-in-out" class="move">Ease-In-Out</div>
+      </div>
+    </div>
+
+    <h2 class="text-center">CSS 2D transforms</h2>
+    <div class="main__general-container">
+      <div class="general-container__image">
+        <img src="../../../../../assets/3d-holo.jpg" alt="">
+      </div>
+      <div class="general-container__list">
+        <h2>Translate</h2>
+        <ol class="list">
+          <li>
+            <h4>En este ejemplo la propiedad CSS que se va a modificar con la transición, sera transform y el tiempo de
+              2s, como se muestra abajo: </h4>
+            <br>
+            <pre>
+              <code>
+                transition: transform 2s
+              </code>
+            </pre>
+          </li>
+          <li>
+            <h4>En la pseudoclase :hover, se coloca la transformación que se requiere aplicar al colocar el cursor sobre
+              la imagen.
+              <br>En este caso es una transformación del tipo translate
+              <br> Existen las siguientes transformaciones:
+              <br>
+              <ul>
+                <li>transform: translateX();</li>
+                <li>transform: translateY();</li>
+                <li>transform: translateZ();</li>
+                <li>transform: translate();</li>
+              </ul>
+            </h4>
+            <br>
+            <pre>
+              <code>
+                transform: translate(-500px, 200px);
+              </code>
+            </pre>
+          </li>
+        </ol>
       </div>
     </div>
   </main>
