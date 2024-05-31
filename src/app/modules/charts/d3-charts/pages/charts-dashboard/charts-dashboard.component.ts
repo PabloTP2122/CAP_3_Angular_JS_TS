@@ -11,6 +11,8 @@ export class ChartsDashboardComponent {
 
   //data = [1, 2, 3, 4, 5]
 
+  year: string = '2021';
+
   public data$!: Observable<any[]>
   public data2$!: Observable<any[]>
 
@@ -25,6 +27,12 @@ export class ChartsDashboardComponent {
     this.data2$ = this.chartsService.getReportesAtendidosSimasTorreon();
   }
 
+
+  changeYearLineChart(event: any) {
+    console.log('Valor del dropdown: ', event.target.value);
+    this.year = event.target.value;
+
+  }
 
 
 }

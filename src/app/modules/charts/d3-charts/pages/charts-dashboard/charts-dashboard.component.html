@@ -21,8 +21,16 @@
   <!--  -->
   <div class="row">
     <div class="col-4">
+      <!-- Gráfica de líneas - Reportes SIMAS -->
       <div class="chart">
-        <app-chart-4-visual [data]="this.data2$ | async" [colorPallete]="colorsPalette"></app-chart-4-visual>
+        <select class="line-chart-options" (change)="changeYearLineChart($event)">
+          <option value="2021" selected> 2021 </option>
+          <option value="2022"> 2022 </option>
+          <option value="2023"> 2023 </option>
+          <option value="2024"> 2024 </option>
+        </select>
+        <app-chart-4-visual [data]="this.data2$ | async" [colorPallete]="colorsPalette"
+          [selectedYear]="this.year"></app-chart-4-visual>
       </div>
     </div>
     <div class="col-4">

@@ -73,7 +73,7 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
   // Solo del componente padre
   @Input() colorPallete: any;
   //@Input() reportesAtendidosSimasT: any;
-
+  @Input() selectedYear: string = '2021';
   // Opciones definidas por usuario TODO: mejorar nombre
   xValue: string = '';
   yValue: string = '';
@@ -87,7 +87,7 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
   margins = {
     left: 40,
     right: 20,
-    top: 60,
+    top: 70,
     bottom: 70
   };
 
@@ -111,12 +111,12 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
   generalContainer: any;
 
   // Define el año para los reportes
-  anio: string = '2021';
+  /* anio: string = '2021'; */
 
   // Getters
   //TODO: adaptar a caso de uso actual (pensar en reutilización de código para obras y reportes)
   get lineData() {
-    const anio = this.anio;
+    const anio = this.selectedYear;
     if (!this.data) { return [] }
     /* return dataReportesXAnio.map((reporte: any) => {
       return {
@@ -312,7 +312,7 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
     // !this.data ? [] : this.data;
     const dataReportes = !this.data ? [] : this.data;
 
-    const anio = this.anio;
+    const anio = this.selectedYear;
     const dataReportesAnio = dataReportes.filter((reporte: any) => reporte.anio === anio);
 
     const xDataMonths = dataReportesAnio.map((reporte: any) => reporte.mes);
@@ -356,7 +356,7 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
       .y((d: any) => this.yScale(d.y));
   }
   setLabels() {
-    const title = `Reportes atendidos por SIMAS en ${this.anio}`;
+    const title = `Reportes atendidos por SIMAS en ${this.selectedYear}`;
     this.title.text(title);
   }
   setLegend() {
@@ -541,12 +541,12 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
         return totalLength;
       })
       .transition()
-      .duration(3000)
+      .duration(2000)
       .attr('stroke-dashoffset', 0);
 
     // Actualización de líneas existentes
     lines.transition()
-      .duration(3000)
+      .duration(2000)
       .attr('d', (d: any) => this.line(d.data))
       .style('stroke', (d: any) => this.colors(d.name))
       .attr('stroke-dasharray', function (this: SVGPathElement) {
