@@ -104,6 +104,8 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
   // Para este ejemplo es el tipo de reportes
   // TODO: obtener desde los tipos en la api (categoría, tipo, etc)
   tipos = ['Aguas residuales', 'Agua potable', 'Conexiones'];
+  //Array de lineas activas
+  active = [true, true, true];
 
   //line generator
   line: any;
@@ -124,18 +126,22 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
         y: reporte.dato
       }
     }); */
-    return this.tipos.map((tipo: any) => {
-      const dataReportesXAnio = this.data.filter((reporte: any) => reporte.anio === anio && reporte.categoria === tipo);
-      return {
-        name: tipo,
-        data: dataReportesXAnio.map((reporte: any) =>
-        ({
-          x: reporte.mes,
-          y: reporte.dato
-        })
-        )
-      }
-    });
+    return this.tipos
+      // filtra las línas activas
+      .filter((d, i) => this.active[i])
+      // Transforma los tipos de reporte al formato correcto
+      .map((tipo: any) => {
+        const dataReportesXAnio = this.data.filter((reporte: any) => reporte.anio === anio && reporte.categoria === tipo);
+        return {
+          name: tipo,
+          data: dataReportesXAnio.map((reporte: any) =>
+          ({
+            x: reporte.mes,
+            y: reporte.dato
+          })
+          )
+        }
+      });
   }
 
   // Config
@@ -360,6 +366,35 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
     this.title.text(title);
   }
   setLegend() {
+    //Métodos específicos
+    const genereteLegendItems = (selection: any) => {
+      let squereSize = 15;
+      selection.append("rect")
+        .attr("class", "legend-icon")
+        .attr("x", (d: any, i: any) => -20 + i * (squereSize + 150))
+        .attr("y", (d: any, i: any) => -10)
+        .attr("width", squereSize)
+        .attr("height", squereSize);
+
+      selection.append("text")
+        .attr('class', 'legend-label')
+        /* .attr('x', 15) */
+        .style('font-size', '0.9rem')
+        .attr("text-anchor", "left")
+        .style("alignment-baseline", "middle");
+    }
+
+
+    const updateLegendItems = (selection: any) => {
+      //Actualiza color del cuadrado
+      selection.selectAll('rect.legend-icon')
+        .style("fill", (d: any) => this.colors(d))
+        .style("stroke", "none");
+      // Actualiza texto del label
+      selection.selectAll('text.legend-label')
+        .text((d: any) => d)
+    }
+
     // 1.- Seleccionar los contenedores y enlazar los datos
     const itemContainers = this.legendContainer.selectAll('g.legend-item')
       .data(this.tipos);
@@ -367,39 +402,29 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
     // 2.- enter (Se usa el método enter de D3.js)
     //  2.1 - Agregar nuevos contenedores
     //  2.2 - Agregar el cuadrado de color + texto de leyenda
-    let squereSize = 15;
+    // 3.- merge (Se usa el método merge de D3.js)
+    //  3.1 - Actualizar el cuadarado y el texto (color y label)
+
     const newItems = itemContainers.enter()
       .append('g')
       .attr('class', 'legend-item')
+      /* .call(genereteLegendItems) */
       .each(function (this: any, d: any) {
         const g = d3.select(this);
-        g.append("rect")
-          .attr("class", "legend-icon")
-          .attr("x", (d, i) => -20 + i * (squereSize + 150))
-          .attr("y", (d, i) => -10)
-          .attr("width", squereSize)
-          .attr("height", squereSize);
-
-        g.append("text")
-          .attr('class', 'legend-label')
-          /* .attr('x', 15) */
-          .style('font-size', '0.9rem')
-          .attr("text-anchor", "left")
-          .style("alignment-baseline", "middle");
-        //console.log(g, d);
-      });
-
-
-    // 3.- merge (Se usa el método merge de D3.js)
-    //  3.1 - Actualizar el cuadarado y el texto (color y label)
+        genereteLegendItems(g);
+        console.log('g: ', g, 'd:', d);
+      })
+      .merge(itemContainers)
+      .call(updateLegendItems)
+      .on('mouseover', (event: any, name: string) => { this.hoverLine(name) })
+      .on('mouseleave', (event: any, name: string) => { this.hoverLine() })
+      .on('click', (event: any, name: any) => {
+        this.toggleActive(name);
+        this.updateChart();
+      })
+      .style('opacity', (d: any, i: any) => this.active[i] ? 1 : 0.3);
     //  3.2 - Enlace de eventos click y hover
-    const mergeSelection = newItems.merge(itemContainers);
-    mergeSelection.selectAll('rect.legend-icon')
-      .style("fill", (d: any) => this.colors(d))
-      .style("stroke", "none");
 
-    mergeSelection.selectAll('text.legend-label')
-      .text((d: any) => d)
 
 
     // 4.- Actualizar estado
@@ -606,6 +631,33 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
     this.setLabels();
     this.setLegend();
     this.draw();
+  }
+
+
+  toggleActive(selected: string) {
+    const index = this.tipos.indexOf(selected);
+
+    this.active[index] = !this.active[index]
+  }
+
+  hoverLine(selected?: string) {
+    const index = this.tipos.indexOf(selected!);
+
+    if (selected && this.active[index]) {
+      this.dataContainer
+        .selectAll('path.data')
+        .attr('opacity', (d: any) => d.name === selected ? 1 : 0.3);
+      this.dataContainer
+        .selectAll('circle.data')
+        .attr('opacity', (d: any) => d.name === selected ? 1 : 0.3);
+    } else {
+      this.dataContainer
+        .selectAll('path.data')
+        .attr('opacity', null);
+      this.dataContainer
+        .selectAll('circle.data')
+        .attr('opacity', null);
+    }
   }
 
 
