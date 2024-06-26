@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, map, retry } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import { ReporteSimas } from '@models/stats_ooa_simas.model';
@@ -14,6 +14,13 @@ export class ChartsService {
   constructor(private http: HttpClient
   ) { }
 
+  getJson(url: string): Observable<any> {
+    return this.http.get<any>(url)
+      .pipe(
+        retry(3)
+      );
+  }
+
   // Se obtienen los montos promedio de las obras realizadas por el municipio.
   getMontosPromedio(): Observable<any> {
     return this.http.get<ReporteSimas>(`${this.baseUrl}/stats/reporte_municipio`)
@@ -23,5 +30,11 @@ export class ChartsService {
   getReportesAtendidosSimasTorreon(): Observable<any> {
     return this.http.get(`${this.baseUrl}/stats/reportes_atendidos_simas_torreon`)
       .pipe(map((res: any) => res['grafica_reportes_resumen']));
+  }
+
+  // Circular graphs data
+  getInvestData(): Observable<any> {
+    const url = 'assets/inversion.json';
+    return this.getJson(url);
   }
 }

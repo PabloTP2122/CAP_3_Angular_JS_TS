@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Carreteras",
+    "now": 45.20,
+    "before": 35.00
+  },
+  {
+    "name": "Puentes",
+    "now": 15.75,
+    "before": 20.50
+  },
+  {
+    "name": "Transporte público",
+    "now": 25.30,
+    "before": 15.00
+  },
+  {
+    "name": "Saneamiento",
+    "now": 5.50,
+    "before": 10.75
+  },
+  {
+    "name": "Parques y recreación",
+    "now": 5.25,
+    "before": 3.75
+  },
+  {
+    "name": "Infraestructura energética",
+    "now": 3.00,
+    "before": 15.00
+  }
+]

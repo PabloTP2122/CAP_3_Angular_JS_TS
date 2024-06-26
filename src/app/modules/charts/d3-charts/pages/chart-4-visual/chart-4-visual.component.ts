@@ -104,6 +104,7 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
   // Para este ejemplo es el tipo de reportes
   // TODO: obtener desde los tipos en la api (categoría, tipo, etc)
   tipos = ['Aguas residuales', 'Agua potable', 'Conexiones'];
+
   //Array de lineas activas
   active = [true, true, true];
 
@@ -187,7 +188,7 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
     this.host = d3.select(element.nativeElement);
 
     // Objeto select de D3
-    console.log('this: ', this);
+    //console.log('this: ', this);
   }
 
   ngOnInit(): void {
@@ -326,23 +327,23 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
 
     const colorsData = dataReportesAnio.map((reporte: any) => reporte.categoria);
 
-    console.log(`Reportes: ${anio}`, dataReportesAnio, '\n',
+    /* console.log(`Reportes: ${anio}`, dataReportesAnio, '\n',
       `mes: ${xDataMonths}`, '\n',
       `reportes: ${yDataSolvedReports}`, '\n',
-      `categoría: ${colorsData}`);
+      `categoría: ${colorsData}`); */
 
     // definir los dominios (Con los datos se define el dominio)
     const xDomain: any = !xDataMonths ? [0, Date.now] : xDataMonths;
 
-    console.log('xDomain:', xDomain);
+    //console.log('xDomain:', xDomain);
     const maxVlues: any = data.map((series) => d3.max(series.data, (d: any) => d.y));
-    console.log('maxVlues', maxVlues);
+    //console.log('maxVlues', maxVlues);
 
     const yDomain: any = !this.data ? [0, 100] : [0, d3.max(maxVlues)];
-    console.log('yDomain', yDomain)
+    //console.log('yDomain', yDomain)
     const colorsDomain = this.tipos;
 
-    console.log('this.innerWidth', this.innerWidth);
+    //console.log('this.innerWidth', this.innerWidth);
 
     // definir los rangos
     const xRange = [0, this.innerWidth];
@@ -365,6 +366,7 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
     const title = `Reportes atendidos por SIMAS en ${this.selectedYear}`;
     this.title.text(title);
   }
+
   setLegend() {
     //Métodos específicos
     const genereteLegendItems = (selection: any) => {
@@ -412,7 +414,7 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
       .each(function (this: any, d: any) {
         const g = d3.select(this);
         genereteLegendItems(g);
-        console.log('g: ', g, 'd:', d);
+        //console.log('g: ', g, 'd:', d);
       })
       .merge(itemContainers)
       .call(updateLegendItems)

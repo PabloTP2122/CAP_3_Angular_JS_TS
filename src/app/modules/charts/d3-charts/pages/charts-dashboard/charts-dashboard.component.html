@@ -35,7 +35,11 @@
     </div>
     <div class="col-4">
       <div class="chart">
-        <app-chart-5-visual></app-chart-5-visual>
+        <select class="chart-options" (change)="pieSelectedData($event)">
+          <option value="now">Ahora</option>
+          <option value="before">Antes</option>
+        </select>
+        <app-chart-5-visual [data]="this.pieData"></app-chart-5-visual>
       </div>
     </div>
     <div class="col-4">

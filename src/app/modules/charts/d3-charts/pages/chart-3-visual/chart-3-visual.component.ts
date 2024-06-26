@@ -225,8 +225,8 @@ export class Chart3VisualComponent implements OnInit {
   }
 
   draw(): void {
-    // ! -> Le indica a JS que los datos estarán disponibles después de renderizar
-    // ? -> Le indica a JS que los datos son opcionales recibirlos
+    // ! -> Le indica a TS que los datos estarán disponibles en este punto
+    // ? -> Le indica a TS que los datos son opcionales recibirlos, es decir que puede ser undefined el valor
     //console.log('data_montos_promedio', this.data)
     // [{monto: 1213, tipo: string}, {monto: 1213, tipo: string}, {monto: 1213, tipo: string}]
     const promedios_tipos = this.data?.map((promedios_tipo: { monto: number, tipo: string }) => promedios_tipo) || [];
