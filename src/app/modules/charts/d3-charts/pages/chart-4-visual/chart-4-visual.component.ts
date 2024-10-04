@@ -55,11 +55,11 @@ export class Chart4VisualComponent implements OnInit, OnChanges {
   yAxisContainer: any;
   legendContainer: any;
   tooltipContainer: any;
+  title: any;
 
   // Contenedores etiquetas
 
   xLabel: any;
-  title: any;
   yLabel: any;
 
   // ----- Datos de entrada -----

@@ -9,6 +9,7 @@ import { ReporteSimas } from '@models/stats_ooa_simas.model';
 })
 export class ChartsService {
 
+  //
   private baseUrl: string = environment.API_URL;
 
   constructor(private http: HttpClient
@@ -33,6 +34,7 @@ export class ChartsService {
   }
 
   // Circular graphs data
+  //
   getInvestData(): Observable<any> {
     const url = 'assets/inversion.json';
     return this.getJson(url);

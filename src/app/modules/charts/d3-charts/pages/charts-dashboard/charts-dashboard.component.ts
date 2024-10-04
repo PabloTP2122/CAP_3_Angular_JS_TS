@@ -19,13 +19,16 @@ export class ChartsDashboardComponent {
   public data2$!: Observable<any[]>
   public datapie$!: Observable<any[]>
 
-  // Para permitir cambiar los datos con dropDown
   invest: any;
+
+  dataPie: any;
+
 
   pieData: IPieData = {
     title: '',
     data: []
-  }
+  };
+
 
   colorsPalette: string[] = ["#9c755f", "#17becf", "#f28e2c"];
 
@@ -38,12 +41,16 @@ export class ChartsDashboardComponent {
     this.data2$ = this.chartsService.getReportesAtendidosSimasTorreon();
     this.datapie$ = this.chartsService.getInvestData();
 
+    console.log('this.datapie$: ', this.datapie$);
+
     this.datapie$.subscribe((data) => {
       this.invest = data;
-      this.pieSelectedData('now');
-      //this.pieData = this.convertInvestDataToPieData('before');
-      //console.log('pieData:', this.pieData);
-    })
+      console.log('data: ', data);
+      this.dataPie = this.convertInvestDataToPieData('now');
+      this.pieData = this.dataPie;
+
+      console.log('this.dataPie: ', this.dataPie);
+    });
 
   }
 
@@ -53,23 +60,45 @@ export class ChartsDashboardComponent {
     this.year = event.target.value;
   }
 
-  /* convertInvestDataToPieData(valueAttr: string) {
-    const data = this.invest.map((e: any) =>
-    ({
-      id: e.name,
-      label: e.name,
-      value: e[valueAttr]
-    }))
-    return {
-      title: "Inversión en infraestructura",
-      data
+  //
+  convertInvestDataToPieData(dropDawnVlue: string) {
+    /*
+
+   {
+    title: ''
+    data: {
+      id: 0,
+      label: '',
+      value: 0
     }
-  } */
+   }
+    */
+    /*
+    d = {
+     "name": "Carreteras",
+     "now": 45.20,
+     "before": 35.00
+     },
+    */
+    const data = this.invest.map((d: any) => ({
+      id: d.name,
+      label: d.name,
+      value: d[dropDawnVlue]
+    }));
+
+
+    return {
+      title: '',
+      data: data
+    }
+
+  }
 
   pieSelectedData(event: any) {
-    const valueAttr = typeof event === 'string' ? event : event.target.value;
-    this.pieData = PieHelper.convert(this.invest, "Inversión en infraestructura", valueAttr, 'name', 'name');
-    //console.log('Evento: ', event.target.value);
+    const dropDawnVlue = event.target.value;
+    const pieValues = this.convertInvestDataToPieData(dropDawnVlue);
+    this.pieData = pieValues;
+    console.log('pieValues: ', pieValues);
   }
 
 

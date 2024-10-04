@@ -4,17 +4,15 @@ import * as d3 from 'd3';
 // Para volver las gráficas componentes reutilizables
 import { IPieConfig, IPieData } from '@models/pie_donut.interfaces';
 
-// Para
-//import ObjectHelper from '../../../../../helpers/object.helper';
-
 @Component({
   selector: 'app-chart-5-visual',
   templateUrl: './chart-5-visual.component.html',
-  styleUrl: './chart-5-visual.component.scss'
+  styleUrls: ['./chart-5-visual.component.scss']
 })
 export class Chart5VisualComponent implements OnInit, OnChanges {
   host: any;
   svg: any;
+  tooltip: any;
 
   // Contenedores
   dataContainer: any;
@@ -35,17 +33,14 @@ export class Chart5VisualComponent implements OnInit, OnChanges {
 
   @Input() data!: IPieData;
 
-  //dimensiones
-  // ! -> Le indica a TS que los datos estarán disponibles en este punto. Es decir, el valor no será nulo ni undefined
-  // ? -> Le indica a TS que los datos son opcionales, es decir que pueden ser undefined y debe manejarlo de forma segura
   dimensions?: DOMRect;
-
   innerWidth?: number;
   innerHeight?: number;
   radius: number = 0;
   innerRadius = 0;
 
-  /*  innerRadiusCoef: 0.7, // Al trabajar con la gráfica de dona es necesario trabajar con un innerRadiusCoef que se define como el porcentaje del radio
+  /* {
+    innerRadiusCoef: 0.7, // Al trabajar con la gráfica de dona es necesario trabajar con un innerRadiusCoef que se define como el porcentaje del radio
     hiddenOpacity: 0.3, // Opacidad en las leyendas deshabilitadas, como en la gráfica de líneas
     legendItem: { // Define las propiedades de las leyendas
       symbolSize: 10,
@@ -65,7 +60,8 @@ export class Chart5VisualComponent implements OnInit, OnChanges {
       top: 40, // Este margen es más grande por el título
       right: 130, // Este margen es más grande por las leyendas que se muestran al lado
       bottom: 10
-    } */
+    }
+  }; */
 
   config: IPieConfig = {
     innerRadiusCoef: 0.7,
@@ -106,13 +102,13 @@ export class Chart5VisualComponent implements OnInit, OnChanges {
 
   constructor(element: ElementRef) {
     this.host = d3.select(element.nativeElement);
-    console.log(this);
   }
 
   ngOnInit(): void {
     this.svg = this.host
       .select('svg')
       .attr('xmlns', 'http://www.w3.org/2000/svg');
+    this.tooltip = d3.select('.tooltip');  // Seleccionar el tooltip
     this.setDimensions();
     this.setElements();
     this.updateChart();
@@ -125,13 +121,10 @@ export class Chart5VisualComponent implements OnInit, OnChanges {
 
   setDimensions() {
     this.dimensions = this.svg.node().getBoundingClientRect();
-
     this.innerWidth = this.dimensions!.width - this.margins.left - this.margins.right;
     this.innerHeight = this.dimensions!.height - this.margins.top - this.margins.bottom;
-
     this.radius = 0.5 * Math.min(this.innerWidth, this.innerHeight);
     this.innerRadius = this.config.innerRadiusCoef * this.radius;
-
     this.svg.attr('viewBox', [0, 0, this.dimensions!.width, this.dimensions!.height]);
   }
 
@@ -155,8 +148,8 @@ export class Chart5VisualComponent implements OnInit, OnChanges {
       .style('text-anchor', 'middle');
   }
 
-
   setParams() {
+    // https://d3js.org/d3-shape/arc
     // Generador del arco
     this.arc = d3.arc()
       .innerRadius(this.innerRadius)
@@ -165,8 +158,9 @@ export class Chart5VisualComponent implements OnInit, OnChanges {
     this.pie = d3.pie()
       .value((d: any) => d.value);
 
-    // color scale
-    this.colors = d3.scaleOrdinal(d3.schemeCategory10)
+    // Escala de colores
+    // https://d3js.org/d3-scale-chromatic/categorical
+    this.colors = d3.scaleOrdinal(d3.schemeTableau10)
       .domain(this.ids);
   }
 
@@ -174,37 +168,96 @@ export class Chart5VisualComponent implements OnInit, OnChanges {
     this.title.text(this.data.title);
   }
 
+  setLegends() {
+    const data = this.data.data;
+
+    this.legendContainer.selectAll('g.legend-item')
+      .data(data)
+      .join('g')
+      .attr('class', 'legend-item')
+      .attr('transform', (d: any, i: number) => `translate(0, ${i * this.config.legendItem.height})`)
+      .style('opacity', (d: { id: unknown; }) => this.hiddenIds.has(d.id) ? this.config.hiddenOpacity : null)
+      .on('mouseenter', (event: any, d: { id: any; }) => this.setHighlights(d.id))
+      .on('mouseleave', () => this.resetHighlights())
+      .on('click', (event: any, d: { id: any; }) => this.toggleHighlight(d.id));
+
+    this.legendContainer.selectAll('g.legend-item')
+      .selectAll('rect')
+      .data((d: any) => [d])
+      .join('rect')
+      .attr('width', this.config.legendItem.symbolSize)
+      .attr('height', this.config.legendItem.symbolSize)
+      .style('fill', (d: { id: any; }) => this.colors(d.id));
+
+    this.legendContainer.selectAll('g.legend-item')
+      .selectAll('text')
+      .data((d: any) => [d])
+      .join('text')
+      .style('font-size', this.config.legendItem.fontSize + 'px')
+      .attr('x', this.config.legendItem.textSeparator)
+      .attr('y', this.config.legendItem.symbolSize)
+      .text((d: { label: any; }) => d.label);
+  }
+
   draw() {
+    const chart = this;
     const data = this.pieData;
-    //1. Enlace de datos
-    const arcs = this.dataContainer
-      .selectAll('path.data')
-      .data(data);
+    const arcs = this.dataContainer.selectAll('path.data').data(data);
 
-
-    //2. Uso de los métodos enter de D3
     arcs.enter()
       .append('path')
       .attr('class', 'data')
       .merge(arcs)
       .attr('d', this.arc)
-      .style('fill', (d: any) => this.colors(d.data.id));
+      .style('fill', (d: any) => this.colors(d.data.id))
+      .on('mouseenter', (event: { pageX: number; pageY: number; }, d: { data: { id: any; label: any; }; endAngle: number; startAngle: number; }) => {
+        this.setHighlights(d.data.id);
+        const percentage = (d.endAngle - d.startAngle) / (2 * Math.PI) * 100;
+        this.tooltip
+          .style('opacity', 1)
+          .html(`${d.data.label}: ${percentage.toFixed(2)}%`)
+          .style('left', (event.pageX + 5) + 'px')
+          .style('top', (event.pageY - 28) + 'px');
+      })
+      .on('mouseleave', () => {
+        this.resetHighlights();
+        this.tooltip.style('opacity', 0);
+      });
 
-    //3. Uso de los métodos exit / remove para cumplir con el patrón de actualización
     arcs.exit().remove();
 
-
-
-
+    this.dataContainer.selectAll('text')
+      .data(data)
+      .join('text')
+      .attr('transform', (d: any) => `translate(${this.arc.centroid(d)})`)
+      .attr('dy', '0.35em')
+      .style('text-anchor', 'middle')
+      .text((d: { endAngle: number; startAngle: number; }) => {
+        const percentage = (d.endAngle - d.startAngle) / (2 * Math.PI) * 100;
+        return `${percentage.toFixed(2)}%`;
+      });
   }
-
 
   updateChart() {
     this.setParams();
     this.setLabels();
+    this.setLegends();
     this.draw();
   }
 
+  setHighlights(id: unknown) {
+    if (this.hiddenIds.has(id)) { return; }
+    this.dataContainer.selectAll('path.data').style('opacity', (d: { data: { id: any; }; }) => d.data.id === id ? null : this.config.hiddenOpacity);
+    this.legendContainer.selectAll('g.legend-item').style('opacity', (d: { id: any; }) => d.id === id ? null : this.config.hiddenOpacity);
+  }
 
+  resetHighlights() {
+    this.dataContainer.selectAll('path.data').style('opacity', null);
+    this.legendContainer.selectAll('g.legend-item').style('opacity', (d: { id: unknown; }) => !this.hiddenIds.has(d.id) ? null : this.config.hiddenOpacity);
+  }
 
+  toggleHighlight(id: unknown) {
+    this.hiddenIds.has(id) ? this.hiddenIds.delete(id) : this.hiddenIds.add(id);
+    this.updateChart();
+  }
 }
